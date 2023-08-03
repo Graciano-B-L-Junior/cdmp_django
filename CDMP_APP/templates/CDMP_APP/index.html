@@ -8,8 +8,65 @@
     <link rel="stylesheet" href="{% static 'CDMP_APP/css/style.css' %}">
 </head>
 <body>
-    <nav class="navigation"></nav>
-    <section class="mini-data"></section>
-    <section class="greater-data"></section>
+    <nav class="navigation">
+        <div class="links">
+            <h4>cabeçalho</h4>
+            <ul>
+                <li><a href="">Adicionar gasto</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li><a href="">Adicionar Deposito</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li><a href="">Adicionar Meta</a> <canvas width="50" height="50"></canvas>
+                </li>
+            </ul>
+        </div>
+        <div class="links">
+            <h4>cabeçalho</h4>
+            <ul>
+                <li><a href="">Link 1</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li> <a href="">Link 2</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li> <a href="">Link 3</a> <canvas width="50" height="50"></canvas>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section class="greater-data">
+        <div class="titulo">
+            <h2>Dashboard</h2>
+            <canvas width="70" height="70"></canvas>
+        </div>
+        <div class="user">
+            <img src="" alt="" srcset=""/>
+            <p>Bem-vindo {{cliente.nome}} a sua casa da moeda pessoal</p>
+        </div>
+        <div class="dem1"></div>
+        <canvas class="canva_1"></canvas>
+        <div class="dem2"></div>
+        <div class="dem3"></div>
+    </section>
+    <section class="mini-data">
+        <h3>Ultimas atividades</h3>
+            <ul>
+                <li>
+                    <canvas width="50" height="50"></canvas>
+                    <p>atividade</p>
+                    <p>R$ 0,00</p>
+                </li>
+                <li>
+                    <canvas width="50" height="50"></canvas>
+                    <p>atividade</p>
+                    <p>R$ 0,00</p>
+                </li>
+                <li>
+                    <canvas width="50" height="50"></canvas>
+                    <p>atividade</p>
+                    <p>R$ 0,00</p>
+                </li>
+            </ul>
+            <canvas id="monitor"></canvas>
+    </section>
+    
 </body>
 </html>

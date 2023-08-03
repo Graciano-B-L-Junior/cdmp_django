@@ -3,6 +3,127 @@
     padding: 0px;
     box-sizing: border-box;
 }
+canvas{
+    background-color: #ccc;
+    border-radius: 15px;
+}
 body{
-    background-color: aquamarine;
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+    "nav section_1 section_2";
+    grid-template-columns: 250px 1fr 300px;
+}
+nav{
+    padding: 20px;
+    grid-area: nav;
+    height: 100%;
+}
+ul{
+    list-style: none;
+}
+ul li{
+    display: flex;
+    align-items: center;
+    margin: 10px 10px;
+    justify-content: space-between;
+}
+ul li a{
+    margin-right: 10px;
+}
+section.greater-data{
+    grid-area: section_1;
+    height: 100%;
+    border-right: 2px solid #ccc;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 70px 70px 2fr 100px 1fr;
+    grid-template-areas: 
+    "titulo titulo"
+    "user ."
+    "dem1 dem1"
+    "canva_1 canva_1"
+    "dem2 dem3";
+    gap: 15px;
+}
+.titulo{
+    grid-area: titulo;
+    display: flex;
+    align-items: center;
+}
+.titulo > h2{
+    margin-right: 10px;
+}
+.user{
+    grid-area:user;
+    display: flex;
+    align-items: center;
+}
+.user > img{
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.dem1{
+    grid-area: dem1;
+    background-color: aliceblue;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.canva_1{
+    grid-area: canva_1;
+    width: 100%;
+    height: 100px;
+}
+
+.dem1,.dem2, .dem3{
+    background-color: aliceblue;
+    border-radius: 30px;
+    padding: 10px;
+    -webkit-box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
+    -moz-box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
+    box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
+}
+
+.dem2{
+    grid-area: dem2;
+    padding: 10px;
+}
+
+.dem3{
+    grid-area: dem3 ;
+    padding: 10px;
+}
+
+section.mini-data{
+    grid-area: section_2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+section.mini-data ul li{
+    margin: 20px 0px;
+}
+
+section.mini-data ul li > p{
+    margin-right: 5px;
+}
+
+section.mini-data ul li canvas{
+    margin-right: 10px;
+}
+
+section.mini-data #monitor{
+    width: 90%;
+    height: auto;
+    align-self: center;
+    position: relative;
+    top: 52%;
 }

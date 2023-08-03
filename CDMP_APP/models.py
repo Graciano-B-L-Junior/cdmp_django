@@ -18,6 +18,10 @@ class Depositos(models.Model):
     descricao = models.CharField(max_length=50)
     data_deposito = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        verbose_name="Deposito"
+        verbose_name_plural="Depositos"
+
 class MetaFinanceira(models.Model):
     nome_meta = models.CharField(max_length=50)
     valor_atual = models.FloatField()
@@ -31,6 +35,10 @@ class Cliente(models.Model):
     depositos = models.ForeignKey(Depositos,blank=True,null=True,on_delete=models.SET_NULL)
     metas = models.ForeignKey(MetaFinanceira,blank=True,null=True,on_delete=models.SET_NULL)
     foto = models.CharField(default="default.jpg",blank=True,null=True,max_length=100)
+
+    class Meta:
+        verbose_name="Cliente"
+        verbose_name_plural="Clientes"
 
 class HistoricoModificaoes(models.Model):
     gasto_fk = models.ForeignKey(Gasto,on_delete=models.CASCADE)
