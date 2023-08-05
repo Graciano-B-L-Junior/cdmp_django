@@ -24,7 +24,7 @@ class Gasto(models.Model):
     valor = models.FloatField()
     descricao = models.CharField(max_length=50)
     data_gasto = models.DateTimeField(default=timezone.now)
-    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria,null=True,on_delete=models.SET_NULL)
     class Meta:
         verbose_name="Gasto"
@@ -38,7 +38,7 @@ class Depositos(models.Model):
     valor = models.FloatField()
     descricao = models.CharField(max_length=50)
     data_deposito = models.DateTimeField(default=timezone.now)
-    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
     class Meta:
         verbose_name="Deposito"
         verbose_name_plural="Depositos"
@@ -53,13 +53,13 @@ class MetaFinanceira(models.Model):
     valor_atual = models.FloatField()
     icone = models.CharField(max_length=50)
     valor_total = models.FloatField()
-    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.nome_meta
 
 class HistoricoCliente(models.Model):
-    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
     operacao = models.CharField(max_length=100)
     data_operacao = models.DateTimeField()
     class Meta:

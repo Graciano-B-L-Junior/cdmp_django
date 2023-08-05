@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'CDMP.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_cdmp',
+        'NAME': 'cdmp_db',
         'USER': 'root',
         'PASSWORD':'root',
         'HOST':''
