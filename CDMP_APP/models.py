@@ -21,15 +21,15 @@ class Categoria(models.Model):
 
     def __str__(self) -> str:
         return self.nome
-class Gasto(models.Model):
+class Despesa(models.Model):
     valor = models.FloatField()
     descricao = models.CharField(max_length=50)
-    data_gasto = models.DateTimeField(default=timezone.now)
+    data_despesa = models.DateTimeField(default=timezone.now)
     cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
     categoria = models.ForeignKey(Categoria,null=True,on_delete=models.SET_NULL)
     class Meta:
-        verbose_name="Gasto"
-        verbose_name_plural="Gastos"
+        verbose_name="Despesa"
+        verbose_name_plural="Despesas"
 
     def __str__(self) -> str:
         return self.descricao
@@ -61,9 +61,15 @@ class MetaFinanceira(models.Model):
 
 class HistoricoCliente(models.Model):
     cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
+    despesa = models.ForeignKey(Despesa,null=True,on_delete=models.CASCADE)
+    deposito = models.ForeignKey(Depositos,null=True,on_delete=models.CASCADE)
+    meta_financeira = models.ForeignKey(MetaFinanceira,null=True,on_delete=models.CASCADE)
     operacao = models.CharField(max_length=100)
     data_operacao = models.DateTimeField()
     class Meta:
         verbose_name="HistoricoCliente"
         verbose_name_plural="HistoricoClientes"
+
+    def __str__(self) -> str:
+        return self.operacao
     

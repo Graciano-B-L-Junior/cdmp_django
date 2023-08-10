@@ -12,9 +12,9 @@
         <div class="links">
             <h4>cabeçalho</h4>
             <ul>
-                <li><a href="{% url 'add_gasto' %}">Adicionar gasto</a> <canvas width="50" height="50"></canvas>
+                <li><a href="{% url 'add_despesa' %}">Adicionar gasto</a> <canvas width="50" height="50"></canvas>
                 </li>
-                <li><a href="">Adicionar Deposito</a> <canvas width="50" height="50"></canvas>
+                <li><a href="{% url 'add_deposito' %}">Adicionar Deposito</a> <canvas width="50" height="50"></canvas>
                 </li>
                 <li><a href="">Adicionar Meta</a> <canvas width="50" height="50"></canvas>
                 </li>
@@ -49,21 +49,16 @@
     <section class="mini-data">
         <h3>Ultimas atividades</h3>
             <ul>
-                <li>
-                    <canvas width="50" height="50"></canvas>
-                    <p>atividade</p>
-                    <p>R$ 0,00</p>
-                </li>
-                <li>
-                    <canvas width="50" height="50"></canvas>
-                    <p>atividade</p>
-                    <p>R$ 0,00</p>
-                </li>
-                <li>
-                    <canvas width="50" height="50"></canvas>
-                    <p>atividade</p>
-                    <p>R$ 0,00</p>
-                </li>
+                {% if historico_cliente %}
+                    {% for historico in historico_cliente %}
+                        <li>
+                            <canvas width="50" height="50"></canvas>
+                            <p>{{historico.operacao}}</p>
+                            <!--<p>{{historico.data_operacao}}</p>-->
+                        </li>
+                    {% endfor%}
+                {% endif %}
+                
             </ul>
             <canvas id="monitor"></canvas>
     </section>
