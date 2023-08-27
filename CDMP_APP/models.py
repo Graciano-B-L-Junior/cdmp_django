@@ -52,7 +52,7 @@ class Depositos(models.Model):
 class MetaFinanceira(models.Model):
     nome_meta = models.CharField(max_length=50)
     valor_atual = models.FloatField()
-    icone = models.CharField(max_length=50)
+    icone = models.CharField(max_length=50,null=True,blank=True)
     valor_total = models.FloatField()
     cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
 

@@ -1,6 +1,6 @@
 from django import forms
 from datetime import datetime
-from .models import Categoria,Depositos
+from .models import Categoria,Depositos,MetaFinanceira
 
 def set_choices_categoria() -> tuple:
         categorias = Categoria.objects.all()
@@ -22,6 +22,15 @@ class DepositoForm(forms.ModelForm):
             fields = ["valor","descricao","data_deposito"]
             widgets ={
                   "data_deposito":forms.DateInput(attrs={'type':'date','max':datetime.now().date})
+            }
+
+class MetaFinanceiraForm(forms.ModelForm):
+      class Meta:
+            model = MetaFinanceira
+            fields = ["nome_meta","valor_atual","valor_total"]
+            widgets = {
+                  "valor_atual":forms.NumberInput(),
+                  "valor_total":forms.NumberInput()
             }
 
     

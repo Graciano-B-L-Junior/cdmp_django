@@ -6,7 +6,7 @@ from .forms import DespesaForm,DepositoForm
 # Create your views here.
 def index(request):
     cliente = models.Cliente.objects.all()[0]
-    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk)
+    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
     context = {
         "cliente":cliente,
         "historico_cliente":historico_cliente

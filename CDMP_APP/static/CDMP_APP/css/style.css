@@ -28,6 +28,9 @@ ul li{
     margin: 10px 10px;
     justify-content: space-between;
 }
+ul.ultimas-atividades li{
+    justify-content: start;
+}
 ul li a{
     margin-right: 10px;
 }
@@ -125,5 +128,5 @@ section.mini-data #monitor{
     height: auto;
     align-self: center;
     position: relative;
-    top: 52%;
+    top: 36%;
 }
