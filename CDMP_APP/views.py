@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from . import models
-from .forms import DespesaForm,DepositoForm
+from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm
+from datetime import datetime
 
 # Create your views here.
 def index(request):
@@ -52,3 +53,30 @@ def add_deposito(request):
     else:
         form = DepositoForm()
     return render(request,"CDMP_APP/add_deposito.html",{"form":form})
+
+def add_meta_financeira(request):
+    if request.method == "POST":
+        form = MetaFinanceiraForm(request.POST)
+        if form.is_valid():
+            meta_financeira:models.MetaFinanceira = form.save(commit=False)
+            cliente = models.Cliente.objects.get(nome="Graciano Junior")
+            meta_financeira.cliente = cliente
+            historico_cliente = models.HistoricoCliente(cliente=cliente,data_operacao=datetime.now(),
+                                                        meta_financeira=meta_financeira,
+                                                        operacao=meta_financeira.nome_meta)
+            meta_financeira.save()
+            historico_cliente.save()
+
+            return HttpResponseRedirect('/')
+        else:
+            return render(request,"CDMP_APP/add_meta.html",{"form":form,"message":"Preencha os campos corretamente"})
+    else:
+        form = MetaFinanceiraForm()
+        return render(request,"CDMP_APP/add_meta.html",{"form":form,})
+
+def view_meta_financeira(request,id):
+    if request.method == "GET":
+        
+        return render(request,"")
+    else:
+        return HttpResponseRedirect('/')

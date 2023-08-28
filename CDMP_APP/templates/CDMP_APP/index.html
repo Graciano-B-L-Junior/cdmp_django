@@ -1,12 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{% static 'CDMP_APP/css/style.css' %}">
-</head>
+{%extends "includes/base.html"%}
+{%block content%}
 <body>
     <nav class="navigation">
         <div class="links">
@@ -16,7 +9,7 @@
                 </li>
                 <li><a href="{% url 'add_deposito' %}">Adicionar Deposito</a> <canvas width="50" height="50"></canvas>
                 </li>
-                <li><a href="">Adicionar Meta</a> <canvas width="50" height="50"></canvas>
+                <li><a href="{% url 'add_meta' %}">Adicionar Meta</a> <canvas width="50" height="50"></canvas>
                 </li>
             </ul>
         </div>
@@ -62,6 +55,5 @@
             </ul>
             <canvas id="monitor"></canvas>
     </section>
-    
 </body>
-</html>
+{%endblock%}

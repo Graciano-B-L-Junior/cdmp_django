@@ -32,5 +32,17 @@ class MetaFinanceiraForm(forms.ModelForm):
                   "valor_atual":forms.NumberInput(),
                   "valor_total":forms.NumberInput()
             }
+            labels={
+                  "valor_atual":("Valor atual"),
+                  "nome_meta":("Nome da meta financeira"),
+            }
+            error_messages={
+                  "valor_atual":{
+                        "invalid":"Preencha apenas com valores numéricos"
+                  },
+                  "valor_total":{
+                        "invalid":"Preencha apenas com valores numéricos"
+                  }
+            }
 
     
