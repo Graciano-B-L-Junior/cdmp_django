@@ -6,6 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="{% static 'CDMP_APP/css/style.css' %}">
+    {%block head-content%}{%endblock%}
 </head>
-    {%block content%}{%endblock%}
+<body>
+    <nav class="navigation">
+        <div class="links">
+            <h4>cabeçalho</h4>
+            <ul>
+                <li><a href="{% url 'add_despesa' %}">Adicionar gasto</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li><a href="{% url 'add_deposito' %}">Adicionar Deposito</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li><a href="{% url 'add_meta' %}">Adicionar Meta</a> <canvas width="50" height="50"></canvas>
+                </li>
+            </ul>
+        </div>
+        <div class="links">
+            <h4>cabeçalho</h4>
+            <ul>
+                <li><a href="">Link 1</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li> <a href="">Link 2</a> <canvas width="50" height="50"></canvas>
+                </li>
+                <li> <a href="">Link 3</a> <canvas width="50" height="50"></canvas>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <section class="greater-data">
+        {%block greater-data%} {%endblock%}
+        
+    </section>
+    <section class="mini-data">
+        <h3>Ultimas atividades</h3>
+            <ul class="ultimas-atividades">
+                {% if historico_cliente %}
+                    {% for historico in historico_cliente %}
+                        <li>
+                            <canvas width="50" height="50"></canvas>
+                            <a href="{% url 'view_history' id=historico.pk %}" ><p>{{historico.operacao}}</p></a>
+                            <!--<p>{{historico.data_operacao}}</p>-->
+                        </li>
+                    {% endfor%}
+                {% endif %}
+            </ul>
+            <canvas id="monitor"></canvas>
+    </section>
+    {%block other-content%}{%endblock%}
+</body>
 </html>

@@ -12,6 +12,7 @@ class Cliente(models.Model):
     class Meta:
         verbose_name="Cliente"
         verbose_name_plural="Clientes"
+
 class Categoria(models.Model):
     nome = models.CharField(unique=True,max_length=50)
     data_criacao = models.DateTimeField(default=timezone.now)
@@ -34,7 +35,6 @@ class Despesa(models.Model):
     def __str__(self) -> str:
         return self.descricao
     
-
 class Depositos(models.Model):
     valor = models.FloatField()
     descricao = models.CharField(max_length=50)
@@ -46,8 +46,6 @@ class Depositos(models.Model):
 
     def __str__(self) -> str:
         return self.descricao
-
-
 
 class MetaFinanceira(models.Model):
     nome_meta = models.CharField(max_length=50)

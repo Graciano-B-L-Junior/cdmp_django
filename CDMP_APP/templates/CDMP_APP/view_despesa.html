@@ -1,0 +1,20 @@
+{% extends "includes/base.html"%}
+{% load static %}
+{%block head-content%}
+<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_view_despesa.css' %}">
+{%endblock%}
+{%block greater-data%}
+<div class="info-meta">
+    <p class="nome-despesa">Descrição: {{nome}}</p>
+    <p>Valor despesa: <span class="valor">{{valor}}</span></p>
+    <p>Data despesa: <span class="data">{{data_despesa}}</span></p>
+    <p>Categoria: <span class="data">{{categoria}}</span></p>
+</div>
+{%endblock%}
+{%block other-content%}
+<script>
+    let valor = parseFloat(document.querySelector("span.valor").innerHTML)
+    valor = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    document.querySelector("span.valor").innerHTML = valor    
+</script>
+{%endblock%}

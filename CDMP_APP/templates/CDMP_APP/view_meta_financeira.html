@@ -1,6 +1,23 @@
 {% extends "includes/base.html"%}
-{%block content%}
-<p class="nome-meta"></p>
-<p class="valor-inicio"></p>
-<p class="valor-final"></p>
+{% load static %}
+{%block head-content%}
+<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_view_meta.css' %}">
+{%endblock%}
+{%block greater-data%}
+<div class="info-meta">
+    <p class="nome-meta">Nome da meta financeira: {{nome}}</p>
+    <p>Valor total da meta: <span class="valor-inicio">{{valor_atual}}</span></p>
+    <p>Valor atual: <span class="valor-final">{{valor_total}}</span></p>
+</div>
+{%endblock%}
+{%block other-content%}
+<script>
+    let valor = parseFloat(document.querySelector("span.valor-inicio").innerHTML)
+    valor = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    document.querySelector("span.valor-inicio").innerHTML = valor
+
+    valor = parseFloat(document.querySelector("span.valor-final").innerHTML)
+    valor = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    document.querySelector("span.valor-final").innerHTML = valor
+</script>
 {%endblock%}

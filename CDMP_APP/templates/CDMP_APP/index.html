@@ -1,59 +1,15 @@
 {%extends "includes/base.html"%}
-{%block content%}
-<body>
-    <nav class="navigation">
-        <div class="links">
-            <h4>cabeçalho</h4>
-            <ul>
-                <li><a href="{% url 'add_despesa' %}">Adicionar gasto</a> <canvas width="50" height="50"></canvas>
-                </li>
-                <li><a href="{% url 'add_deposito' %}">Adicionar Deposito</a> <canvas width="50" height="50"></canvas>
-                </li>
-                <li><a href="{% url 'add_meta' %}">Adicionar Meta</a> <canvas width="50" height="50"></canvas>
-                </li>
-            </ul>
-        </div>
-        <div class="links">
-            <h4>cabeçalho</h4>
-            <ul>
-                <li><a href="">Link 1</a> <canvas width="50" height="50"></canvas>
-                </li>
-                <li> <a href="">Link 2</a> <canvas width="50" height="50"></canvas>
-                </li>
-                <li> <a href="">Link 3</a> <canvas width="50" height="50"></canvas>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <section class="greater-data">
-        <div class="titulo">
-            <h2>Dashboard</h2>
-            <canvas width="70" height="70"></canvas>
-        </div>
-        <div class="user">
-            <img src="" alt="" srcset=""/>
-            <p>Bem-vindo {{cliente.nome}} a sua casa da moeda pessoal</p>
-        </div>
-        <div class="dem1"></div>
-        <canvas class="canva_1"></canvas>
-        <div class="dem2"></div>
-        <div class="dem3"></div>
-    </section>
-    <section class="mini-data">
-        <h3>Ultimas atividades</h3>
-            <ul class="ultimas-atividades">
-                {% if historico_cliente %}
-                    {% for historico in historico_cliente %}
-                        <li>
-                            <canvas width="50" height="50"></canvas>
-                            <p>{{historico.operacao}}</p>
-                            <!--<p>{{historico.data_operacao}}</p>-->
-                        </li>
-                    {% endfor%}
-                {% endif %}
-                
-            </ul>
-            <canvas id="monitor"></canvas>
-    </section>
-</body>
+{%block greater-data%}
+<div class="titulo">
+    <h2>Dashboard</h2>
+    <canvas width="70" height="70"></canvas>
+</div>
+<div class="user">
+    <img src="" alt="" srcset=""/>
+    <p>Bem-vindo {{cliente.nome}} a sua casa da moeda pessoal</p>
+</div>
+<div class="dem1"></div>
+<canvas class="canva_1"></canvas>
+<div class="dem2"></div>
+<div class="dem3"></div>
 {%endblock%}

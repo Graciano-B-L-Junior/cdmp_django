@@ -74,9 +74,59 @@ def add_meta_financeira(request):
         form = MetaFinanceiraForm()
         return render(request,"CDMP_APP/add_meta.html",{"form":form,})
 
+def treat_route(request,id):
+    historico = models.HistoricoCliente.objects.get(pk=id)
+    if historico.meta_financeira != None:
+        return view_meta_financeira(request,id)
+    elif historico.despesa != None:
+        return view_gasto(request,id)
+    elif historico.deposito != None:
+        return view_deposito(request,id)
+    
+
 def view_meta_financeira(request,id):
     if request.method == "GET":
-        
-        return render(request,"")
+        meta_financeira = models.HistoricoCliente.objects.get(pk=id).meta_financeira
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        context={
+            "nome":meta_financeira.nome_meta,
+            "valor_atual":meta_financeira.valor_atual,
+            "valor_total":meta_financeira.valor_total,
+            "historico_cliente":historico_cliente
+        }
+        return render(request,"CDMP_APP/view_meta_financeira.html",context)
+    else:
+        return HttpResponseRedirect('/')
+    
+
+def view_gasto(request,id):
+    if request.method == "GET":
+        despesa = models.HistoricoCliente.objects.get(pk=id).despesa
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        context={
+            "nome":despesa.descricao,
+            "valor":despesa.valor,
+            "data_despesa":despesa.data_despesa.strftime("%d/%m/%Y"),
+            "categoria":despesa.categoria.nome,
+            "historico_cliente":historico_cliente
+        }
+        return render(request,"CDMP_APP/view_despesa.html",context)
+    else:
+        return HttpResponseRedirect('/')
+    
+def view_deposito(request,id):
+    if request.method == "GET":
+        deposito = models.HistoricoCliente.objects.get(pk=id).deposito
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        context={
+            "nome":deposito.descricao,
+            "valor":deposito.valor,
+            "data_despesa":deposito.data_deposito.strftime("%d/%m/%Y"),
+            "historico_cliente":historico_cliente
+        }
+        return render(request,"CDMP_APP/view_deposito.html",context)
     else:
         return HttpResponseRedirect('/')
