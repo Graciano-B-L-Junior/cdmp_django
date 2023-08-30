@@ -45,4 +45,15 @@ class MetaFinanceiraForm(forms.ModelForm):
                   }
             }
 
-    
+
+class QueryDespesaPorNomeForm(forms.Form):
+      nome = forms.CharField()
+
+class QueryDespesaPorDataForm(forms.Form):
+      nome = forms.CharField()
+      data_inicio = forms.DateField(widget=forms.DateInput(
+            attrs={'type':'date','max':datetime.now().date}
+      ))
+      data_final = forms.DateField(widget=forms.DateInput(
+            attrs={'type':'date','max':datetime.now().date}
+      ))

@@ -1,0 +1,24 @@
+{% extends "includes/base.html"%}
+{% load static %}
+{%block head-content%}
+
+{%endblock%}
+{%block greater-data%}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Pesquisar">
+</form>
+
+{%endblock%}
+{%block other-content%}
+<script>
+    `let valor = parseFloat(document.querySelector("span.valor-inicio").innerHTML)
+    valor = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    document.querySelector("span.valor-inicio").innerHTML = valor
+
+    valor = parseFloat(document.querySelector("span.valor-final").innerHTML)
+    valor = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    document.querySelector("span.valor-final").innerHTML = valor`
+</script>
+{%endblock%}

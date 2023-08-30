@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from . import models
-from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm
+from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,QueryDespesaPorNomeForm,QueryDespesaPorDataForm
 from datetime import datetime
+from typing import List
 
 # Create your views here.
 def index(request):
@@ -115,7 +116,8 @@ def view_gasto(request,id):
         return render(request,"CDMP_APP/view_despesa.html",context)
     else:
         return HttpResponseRedirect('/')
-    
+
+
 def view_deposito(request,id):
     if request.method == "GET":
         deposito = models.HistoricoCliente.objects.get(pk=id).deposito
@@ -130,3 +132,19 @@ def view_deposito(request,id):
         return render(request,"CDMP_APP/view_deposito.html",context)
     else:
         return HttpResponseRedirect('/')
+    
+
+def view_all_gastos(request):
+    if request.method == "POST":
+        form = QueryDespesaPorNomeForm(request.POST)
+        if form.is_valid():
+            nome = form.cleaned_data["nome"]
+            cliente = models.Cliente.objects.all()[0]
+            historico = models.HistoricoCliente.objects.filter(cliente=cliente.pk,operacao__icontains=nome,despesa__isnull=False).order_by('-id')
+            lista_despesa = []
+            for dado in historico:
+                lista_despesa.append(dado.despesa)          
+        return render(request,"CDMP_APP/view_all_despesas.html",{"form":form})
+    else:
+        form = QueryDespesaPorNomeForm()
+        return render(request,"CDMP_APP/view_all_despesas.html",{"form":form})
