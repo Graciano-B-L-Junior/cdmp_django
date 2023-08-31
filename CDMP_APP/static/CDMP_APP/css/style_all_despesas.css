@@ -1,0 +1,7 @@
+section.greater-data{
+    display: flex !important;
+    flex-direction: column;
+}
+.edit-despesa button{
+    cursor: pointer;
+}

@@ -7,5 +7,6 @@ urlpatterns = [
     path('adicionar_deposito',views.add_deposito,name='add_deposito'),
     path('adicionar_meta',views.add_meta_financeira,name="add_meta"),
     path('vizualizar_historico/<int:id>',views.treat_route,name="view_history"),
-    path('vizualizar_gastos',views.view_all_gastos,name="view_all_gastos")
+    path('vizualizar_gastos',views.view_all_despesas,name="view_all_gastos"),
+    path('editar_despesa/<int:id>',views.edit_despesa,name="edit_despesa")
 ]
