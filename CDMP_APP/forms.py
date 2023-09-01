@@ -13,7 +13,7 @@ def set_choices_categoria() -> tuple:
 class DespesaForm(forms.Form):
     valor = forms.FloatField(error_messages={"invalid":"Preencha o campo apenas com números"})
     descricao = forms.CharField(max_length=50)
-    data_gasto = forms.DateField(widget=forms.DateInput(attrs={'type':'date','max':datetime.now().date}))
+    data_despesa = forms.DateField(widget=forms.DateInput(attrs={'type':'date','max':datetime.now().date}))
     categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria())
 
 class DepositoForm(forms.ModelForm):
