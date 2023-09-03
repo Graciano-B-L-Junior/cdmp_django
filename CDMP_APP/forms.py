@@ -57,3 +57,6 @@ class QueryDespesaPorDataForm(forms.Form):
       data_final = forms.DateField(widget=forms.DateInput(
             attrs={'type':'date','max':datetime.now().date}
       ))
+
+class QueryDespesaPorCategoriaForm(forms.Form):
+      categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria())

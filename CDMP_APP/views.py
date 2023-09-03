@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from . import models
-from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,QueryDespesaPorNomeForm,QueryDespesaPorDataForm
+from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm
 from datetime import datetime
 from typing import List
 
@@ -200,6 +200,7 @@ def edit_despesa(request,id):
             despesa.descricao = form.cleaned_data["descricao"]
             despesa.data_despesa = form.cleaned_data["data_despesa"]
             despesa.save()
+            return HttpResponseRedirect("/vizualizar_gastos")
 
         cliente = models.Cliente.objects.all()[0]
         historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
@@ -208,3 +209,10 @@ def edit_despesa(request,id):
             "historico_cliente":historico_cliente
         }
         return render(request,"CDMP_APP/edit_despesa.html",context)
+    
+def view_despesa_por_categoria(request):
+    if request.method == "GET":
+        form = QueryDespesaPorCategoriaForm()
+        return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form})
+    elif request.method == "POST":
+        pass
