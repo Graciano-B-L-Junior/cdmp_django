@@ -156,9 +156,11 @@ def view_despesa(request,id):
     
 
 def view_all_despesas(request):
+    page_redirect=""
     if request.method == "POST":
         form = QueryDespesaPorNomeForm(request.POST)
         if form.is_valid():
+            page_redirect="?page=vizualizar_gastos"
             nome = form.cleaned_data["nome"]
             cliente = models.Cliente.objects.all()[0]
             historico = models.HistoricoCliente.objects.filter(cliente=cliente.pk,operacao__icontains=nome,despesa__isnull=False).order_by('-id')
@@ -166,7 +168,7 @@ def view_all_despesas(request):
             lista_despesa = []
             for dado in historico:
                 lista_despesa.append(dado.despesa)          
-        return render(request,"CDMP_APP/view_all_despesas.html",{"form":form,"historico_cliente":historico_cliente,"despesas":lista_despesa})
+        return render(request,"CDMP_APP/view_all_despesas.html",{"form":form,"historico_cliente":historico_cliente,"despesas":lista_despesa,"page":page_redirect})
     else:
         form = QueryDespesaPorNomeForm()
         cliente = models.Cliente.objects.all()[0]
@@ -200,7 +202,9 @@ def edit_despesa(request,id):
             despesa.descricao = form.cleaned_data["descricao"]
             despesa.data_despesa = form.cleaned_data["data_despesa"]
             despesa.save()
-            return HttpResponseRedirect("/vizualizar_gastos")
+            page = request.GET.get("page")
+
+            return HttpResponseRedirect(f"/{page}")
 
         cliente = models.Cliente.objects.all()[0]
         historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
@@ -211,8 +215,28 @@ def edit_despesa(request,id):
         return render(request,"CDMP_APP/edit_despesa.html",context)
     
 def view_despesa_por_categoria(request):
+    page_redirect=""
     if request.method == "GET":
         form = QueryDespesaPorCategoriaForm()
-        return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form})
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})
     elif request.method == "POST":
-        pass
+        page_redirect="?page=visualizar_despesas_por_categoria"
+        form = QueryDespesaPorCategoriaForm(request.POST)
+        if form.is_valid():
+            categoria = form.cleaned_data["categoria"]
+            cliente = models.Cliente.objects.all()[0]
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            categoria = models.Categoria.objects.get(nome=categoria)
+            despesa = models.HistoricoCliente.objects.filter(cliente=cliente.pk,despesa__isnull=False).only('despesa').order_by('-data_operacao')
+            despesa = models.Despesa.objects.filter(id__in=despesa,categoria=categoria.pk)
+            
+            return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,
+                                                                              "historico_cliente":historico_cliente,
+                                                                              "despesas":despesa,
+                                                                              "page":page_redirect})
+        else:
+            cliente = models.Cliente.objects.all()[0]
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})

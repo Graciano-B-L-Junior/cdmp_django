@@ -33,7 +33,7 @@
     })
     document.querySelectorAll(".edit-despesa button").forEach((el)=>{
         el.addEventListener('click',()=>{
-            window.location.href = "{% url 'edit_despesa' id=0 %}".replace("0",el.id)
+            window.location.href = "{% url 'edit_despesa' id=0 %}{{page}}".replace("0",el.id)
         })
     })
 </script>
