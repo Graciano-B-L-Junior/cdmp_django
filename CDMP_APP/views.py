@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
+from django.contrib import messages
 from . import models
 from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm
 from datetime import datetime
@@ -240,3 +241,33 @@ def view_despesa_por_categoria(request):
             cliente = models.Cliente.objects.all()[0]
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})
+
+def view_despesa_por_data(request):
+    page_redirect=""
+    if request.method == "GET":
+        form = QueryDespesaPorDataForm()
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-data_operacao')[:5]
+        return render(request,"CDMP_APP/view_despesa_por_data.html",{"form":form,"historico_cliente":historico_cliente})
+    elif request.method == "POST":
+        page_redirect="?page=visualizar_despesa_por_data"
+        form = QueryDespesaPorDataForm(request.POST)
+        if form.is_valid():
+            data_inicio = form.cleaned_data["data_inicio"]
+            data_fim = form.cleaned_data["data_final"]
+            if data_inicio > data_fim:
+                messages.error(request,"data inicio não pode maior que a data final")
+            cliente = models.Cliente.objects.all()[0]
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            despesa = models.HistoricoCliente.objects.filter(cliente=cliente.pk,despesa__isnull=False).only('despesa').order_by('-data_operacao')
+            despesa = models.Despesa.objects.filter(data_despesa__lte=data_fim,data_despesa__gte=data_inicio)
+            
+            return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,
+                                                                              "historico_cliente":historico_cliente,
+                                                                              "despesas":despesa,
+                                                                              "page":page_redirect})
+        else:
+            cliente = models.Cliente.objects.all()[0]
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})
+
