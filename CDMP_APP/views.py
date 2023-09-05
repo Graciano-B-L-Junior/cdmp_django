@@ -35,6 +35,7 @@ def add_gasto(request):
             cliente = models.Cliente.objects.all()[0]
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             return render(request,"CDMP_APP/add_gasto.html",{"form":form,
+                                                             "historico_cliente":historico_cliente,
                                                              "message":"Preencha os campos corretamente"})
     else:
         form = DespesaForm()
@@ -56,10 +57,15 @@ def add_deposito(request):
 
             return HttpResponseRedirect('/')
         else:
-            return render(request,"CDMP_APP/add_deposito.html",{"form":form,"message":"Preencha os campos corretamente"})
+            return render(request,"CDMP_APP/add_deposito.html",{"form":form,
+                                                                "historico_cliente":historico_cliente,
+                                                                "message":"Preencha os campos corretamente"})
     else:
         form = DepositoForm()
-    return render(request,"CDMP_APP/add_deposito.html",{"form":form})
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+    return render(request,"CDMP_APP/add_deposito.html",{"form":form,
+                                                        "historico_cliente":historico_cliente})
 
 def add_meta_financeira(request):
     if request.method == "POST":
@@ -76,10 +82,17 @@ def add_meta_financeira(request):
 
             return HttpResponseRedirect('/')
         else:
-            return render(request,"CDMP_APP/add_meta.html",{"form":form,"message":"Preencha os campos corretamente"})
+            cliente = models.Cliente.objects.all()[0]
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/add_meta.html",{"form":form,
+                                                            "historico_cliente":historico_cliente,
+                                                            "message":"Preencha os campos corretamente"})
     else:
         form = MetaFinanceiraForm()
-        return render(request,"CDMP_APP/add_meta.html",{"form":form,})
+        cliente = models.Cliente.objects.all()[0]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        return render(request,"CDMP_APP/add_meta.html",{"form":form,
+                                                        "historico_cliente":historico_cliente})
 
 def treat_route(request,id):
     historico = models.HistoricoCliente.objects.get(pk=id)
@@ -247,7 +260,7 @@ def view_despesa_por_data(request):
     if request.method == "GET":
         form = QueryDespesaPorDataForm()
         cliente = models.Cliente.objects.all()[0]
-        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-data_operacao')[:5]
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
         return render(request,"CDMP_APP/view_despesa_por_data.html",{"form":form,"historico_cliente":historico_cliente})
     elif request.method == "POST":
         page_redirect="?page=visualizar_despesa_por_data"
@@ -256,18 +269,19 @@ def view_despesa_por_data(request):
             data_inicio = form.cleaned_data["data_inicio"]
             data_fim = form.cleaned_data["data_final"]
             if data_inicio > data_fim:
-                messages.error(request,"data inicio não pode maior que a data final")
+                messages.error(request,"data inicio não pode ser maior que a data final")
+                #messages.error(request,"data inicio não pode maior que a data final")
             cliente = models.Cliente.objects.all()[0]
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             despesa = models.HistoricoCliente.objects.filter(cliente=cliente.pk,despesa__isnull=False).only('despesa').order_by('-data_operacao')
             despesa = models.Despesa.objects.filter(data_despesa__lte=data_fim,data_despesa__gte=data_inicio)
             
-            return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,
-                                                                              "historico_cliente":historico_cliente,
-                                                                              "despesas":despesa,
-                                                                              "page":page_redirect})
+            return render(request,"CDMP_APP/view_despesa_por_data.html",{"form":form,
+                                                                        "historico_cliente":historico_cliente,
+                                                                        "despesas":despesa,
+                                                                        "page":page_redirect})
         else:
             cliente = models.Cliente.objects.all()[0]
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-            return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})
+            return render(request,"CDMP_APP/view_despesa_por_data.html",{"form":form,"historico_cliente":historico_cliente})
 
