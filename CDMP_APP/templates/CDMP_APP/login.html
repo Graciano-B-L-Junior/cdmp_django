@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'CDMP_APP/css/sytle.css' %}">
+    <link rel="stylesheet" href="{% static 'CDMP_APP/css/style_login.css' %}">
+    <title>Casa da Moeda Pessoal</title>
+</head>
+<body>
+    <section class="login">
+        <h2>Login</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Login">
+        </form>
+    </section>
+    <section class="cadastrar">
+        <h2>Olá, Amigo</h2>
+        <p>Crie sua nova conta gratuita, e comece controlar suas finanças de maneira mais divertida</p>
+        <a href="{% url 'cadastrar' %}">Cadastrar</a>
+    </section>
+</body>
+</html>

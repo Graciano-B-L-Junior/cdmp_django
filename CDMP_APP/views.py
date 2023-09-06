@@ -2,11 +2,25 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from . import models
-from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm
+from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,\
+    QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
+    LoginForm,CadastroForm
 from datetime import datetime
 from typing import List
 
+
+
 # Create your views here.
+
+def login(request):
+    form = LoginForm()
+
+    return render(request,"CDMP_APP/login.html",{"form":form})
+
+def cadastro(request):
+    form = CadastroForm()
+    return render(request,"CDMP_APP/cadastrar_conta.html",{"form":form})
+
 def index(request):
     cliente = models.Cliente.objects.all()[0]
     historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
