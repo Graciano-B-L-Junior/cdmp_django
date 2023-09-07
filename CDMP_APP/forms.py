@@ -61,11 +61,11 @@ class QueryDespesaPorCategoriaForm(forms.Form):
       categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria())
 
 class LoginForm(forms.Form):
-      login = forms.CharField(max_length=100,label="Login")
+      email = forms.EmailField(label="E-mail")
       password = forms.CharField(widget=forms.PasswordInput,label="Senha")
 
 class CadastroForm(forms.Form):
-      login = forms.CharField(max_length=100,label="Login")
+      nome = forms.CharField(max_length=100,label="Nome")
       password = forms.CharField(widget=forms.PasswordInput,label="Senha")
       repeat_password = forms.CharField(widget=forms.PasswordInput,label="Repita a senha")
       email = forms.EmailField(label="E-mail")

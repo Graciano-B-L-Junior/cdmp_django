@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'CDMP_APP/css/sytle.css' %}">
     <link rel="stylesheet" href="{% static 'CDMP_APP/css/style_login.css' %}">
     <title>Casa da Moeda Pessoal</title>
 </head>
@@ -16,6 +15,13 @@
             {{ form }}
             <input type="submit" value="Login">
         </form>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </section>
     <section class="cadastrar">
         <h2>Olá, Amigo</h2>

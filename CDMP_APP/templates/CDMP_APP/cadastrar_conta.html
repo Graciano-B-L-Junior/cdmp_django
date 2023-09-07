@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'CDMP_APP/css/sytle.css' %}">
-    <link rel="stylesheet" href="{% static 'CDMP_APP/css/style_castrar.css' %}">
+    <link rel="stylesheet" href="{% static 'CDMP_APP/css/style_cadastrar.css' %}">
     <title>Casa da Moeda Pessoal - Cadastrar Conta</title>
 </head>
 <body>
@@ -17,6 +16,13 @@
             <a href=""></a>
             <input type="submit" value="Cadastrar">
         </form>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </section>
     <section class="info">
         <h2>Comece a controlar suas finanças de maneira mais divertida</h2>

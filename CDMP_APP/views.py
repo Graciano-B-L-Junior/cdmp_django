@@ -13,22 +13,60 @@ from typing import List
 # Create your views here.
 
 def login(request):
-    form = LoginForm()
+    if request.method == "GET":
+        form = LoginForm()
 
-    return render(request,"CDMP_APP/login.html",{"form":form})
+        return render(request,"CDMP_APP/login.html",{"form":form})
+    elif request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            senha = form.cleaned_data["password"]
+            try:
+                cliente = models.Cliente.objects.get(email=email,senha=senha)
+                request.session["cliente"]=cliente.pk
+                return HttpResponseRedirect("/home")
+            except:
+                messages.error(request,"Email ou senha errados")
+
+        return render(request,"CDMP_APP/login.html",{"form":form})
 
 def cadastro(request):
-    form = CadastroForm()
-    return render(request,"CDMP_APP/cadastrar_conta.html",{"form":form})
+    if request.method == "GET":
+        form = CadastroForm()
+        return render(request,"CDMP_APP/cadastrar_conta.html",{"form":form})
+    elif request.method == "POST":
+        form = CadastroForm(request.POST)
+        if form.is_valid():
+            nome = form.cleaned_data["nome"]
+            password = form.cleaned_data["password"]
+            repeat_password = form.cleaned_data["repeat_password"]
+            email = form.cleaned_data["email"]
+            if password != repeat_password:
+                messages.error(request,"As senhas precisam ser iguais")
+            else:
+                cliente = models.Cliente()
+                cliente.nome = nome
+                cliente.email = email
+                cliente.senha = password
+                cliente.save()
+                messages.info(request,"Conta criada com sucesso!")
+                return HttpResponseRedirect('/')
+
+        return render(request,"CDMP_APP/cadastrar_conta.html",{"form":form})
 
 def index(request):
-    cliente = models.Cliente.objects.all()[0]
-    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-    context = {
-        "cliente":cliente,
-        "historico_cliente":historico_cliente
-    }
-    return render(request,'CDMP_APP/index.html',context)
+    cliente = request.session.get("cliente")
+    if cliente != None:
+        cliente = models.Cliente.objects.get(pk=cliente)
+        historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        context = {
+            "cliente":cliente,
+            "historico_cliente":historico_cliente
+        }
+        return render(request,'CDMP_APP/index.html',context)
+    else:
+        return HttpResponseRedirect("/")
 
 def add_gasto(request):
     if request.method == "POST":
