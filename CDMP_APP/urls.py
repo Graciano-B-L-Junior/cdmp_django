@@ -5,6 +5,7 @@ urlpatterns = [
     path('',views.login,name='login'),
     path('cadastrar_conta',views.cadastro,name='cadastrar'),
     path('home',views.index,name='index'),
+    path('sair',views.logoff,name="sair"),
     path('adicionar_despesa',views.add_gasto,name="add_despesa"),
     path('adicionar_deposito',views.add_deposito,name='add_deposito'),
     path('adicionar_meta',views.add_meta_financeira,name="add_meta"),

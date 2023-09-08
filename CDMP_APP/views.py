@@ -55,6 +55,10 @@ def cadastro(request):
 
         return render(request,"CDMP_APP/cadastrar_conta.html",{"form":form})
 
+def logoff(request):
+    request.session.pop("cliente")
+    return HttpResponseRedirect("/")
+
 def index(request):
     cliente = request.session.get("cliente")
     if cliente != None:

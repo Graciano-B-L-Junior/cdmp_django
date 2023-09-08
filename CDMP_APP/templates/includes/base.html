@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="{% static 'CDMP_APP/css/style.css' %}">
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     {%block head-content%}{%endblock%}
 </head>
 <body>
@@ -15,6 +16,9 @@
             <ul>
                 <li>
                     <a href="{% url 'index' %}">Home</a>  <canvas width="50" height="50"></canvas>
+                </li>
+                <li>
+                    <a href="{% url 'sair' %}">Sair</a>  <canvas width="50" height="50"></canvas>
                 </li>
                 <li><a href="{% url 'add_despesa' %}">Adicionar despesa</a> <canvas width="50" height="50"></canvas>
                 </li>

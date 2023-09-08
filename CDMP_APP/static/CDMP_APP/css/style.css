@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 canvas{
-    background-color: #ccc;
+    border: 1px solid #ccc;
     border-radius: 15px;
 }
 body{
@@ -41,7 +41,7 @@ section.greater-data{
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 70px 70px 2fr 100px 1fr;
+    grid-template-rows: 70px 70px 300px 100px 200px;
     grid-template-areas: 
     "titulo titulo"
     "user ."
@@ -73,7 +73,6 @@ section.greater-data{
 
 .dem1{
     grid-area: dem1;
-    background-color: aliceblue;
     border-radius: 30px;
     padding: 20px;
 }
@@ -85,7 +84,7 @@ section.greater-data{
 }
 
 .dem1,.dem2, .dem3{
-    background-color: aliceblue;
+    border: 1px solid #ccc;
     border-radius: 30px;
     padding: 10px;
     -webkit-box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
