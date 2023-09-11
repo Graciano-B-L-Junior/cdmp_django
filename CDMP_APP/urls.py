@@ -13,5 +13,6 @@ urlpatterns = [
     path('vizualizar_gastos',views.view_all_despesas,name="view_all_gastos"),
     path('editar_despesa/<int:id>',views.edit_despesa,name="edit_despesa"),
     path('visualizar_despesas_por_categoria',views.view_despesa_por_categoria,name="despesa_por_categoria"),
-    path('visualizar_despesa_por_data',views.view_despesa_por_data,name="despesa_por_data")
+    path('visualizar_despesa_por_data',views.view_despesa_por_data,name="despesa_por_data"),
+    path('get/gastos_por_mes',views.get_despesas_agrupadas_por_mes_grafico,name="gastos_por_mes")
 ]

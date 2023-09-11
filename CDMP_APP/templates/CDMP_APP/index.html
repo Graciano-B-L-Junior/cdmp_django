@@ -1,4 +1,9 @@
 {%extends "includes/base.html"%}
+{% load static %}
+{%block head-content%}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="{% static 'CDMP_APP/js/grafico_por_mes.js' %}"></script>
+{%endblock%}
 {%block greater-data%}
 <div class="titulo">
     <h2>Dashboard</h2>
@@ -42,7 +47,6 @@ const config = {
     }
   }
 }
-new Chart(ctx, config);
 new Chart(ctx2, config);
 new Chart(ctx3, config);
 </script>
