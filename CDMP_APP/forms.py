@@ -1,6 +1,6 @@
 from django import forms
 from datetime import datetime
-from .models import Categoria,Depositos,MetaFinanceira
+from .models import Categoria,Depositos,MetaFinanceira,TetoDeGastos
 
 def set_choices_categoria() -> tuple:
         categorias = Categoria.objects.all()
@@ -45,7 +45,30 @@ class MetaFinanceiraForm(forms.ModelForm):
                   }
             }
 
-
+class TetoDeGastosForm(forms.ModelForm):
+      class Meta:
+            model = TetoDeGastos
+            fields = ["janeiro","fevereiro","marco",
+                      "abril","maio","junho",
+                      "julho","agosto","setembro",
+                      "outubro","novembro","dezembro"
+                      ]
+            widgets = {
+                  "janeiro":forms.NumberInput(),
+                  "fevereiro":forms.NumberInput(),
+                  "marco":forms.NumberInput(),
+                  "abril":forms.NumberInput(),
+                  "maio":forms.NumberInput(),
+                  "junho":forms.NumberInput(),
+                  "julho":forms.NumberInput(),
+                  "agosto":forms.NumberInput(),
+                  "setembro":forms.NumberInput(),
+                  "outubro":forms.NumberInput(),
+                  "novembro":forms.NumberInput(),
+                  "dezembro":forms.NumberInput(),
+            }
+            
+            
 class QueryDespesaPorNomeForm(forms.Form):
       nome = forms.CharField()
 

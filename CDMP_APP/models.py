@@ -70,4 +70,18 @@ class HistoricoCliente(models.Model):
 
     def __str__(self) -> str:
         return self.operacao
-    
+
+class TetoDeGastos(models.Model):
+        cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
+        janeiro = models.FloatField()
+        fevereiro = models.FloatField()
+        marco = models.FloatField()
+        abril = models.FloatField()
+        maio = models.FloatField()
+        junho = models.FloatField()
+        julho = models.FloatField()
+        agosto = models.FloatField()
+        setembro = models.FloatField()
+        outubro = models.FloatField()
+        novembro = models.FloatField()
+        dezembro = models.FloatField()

@@ -4,7 +4,7 @@ from django.contrib import messages
 from . import models
 from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
-    LoginForm,CadastroForm
+    LoginForm,CadastroForm,TetoDeGastosForm
 from datetime import datetime
 from typing import List
 import json
@@ -162,6 +162,24 @@ def add_meta_financeira(request):
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             return render(request,"CDMP_APP/add_meta.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
+    else:
+        return HttpResponseRedirect("/")
+    
+def add_teto_gasto(request):
+    cliente = request.session.get("cliente")
+    if cliente !=None:
+        if request.method == "GET":
+            form = TetoDeGastosForm()
+            cliente = models.Cliente.objects.get(pk=cliente)
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/add_teto_gasto.html",{"form":form,
+                                                            "historico_cliente":historico_cliente})
+        elif request.method == "POST":
+            geral = request.POST.get("geral")
+            if geral !=None:
+                pass
+            else:
+                pass
     else:
         return HttpResponseRedirect("/")
 
@@ -334,7 +352,7 @@ def view_despesa_por_categoria(request):
         if request.method == "GET":
             form = QueryDespesaPorCategoriaForm()
             cliente = models.Cliente.objects.get(pk=cliente)
-            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente).order_by('-id')[:5]
             return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})
         elif request.method == "POST":
             page_redirect="?page=visualizar_despesas_por_categoria"
@@ -342,11 +360,10 @@ def view_despesa_por_categoria(request):
             if form.is_valid():
                 categoria = form.cleaned_data["categoria"]
                 cliente = models.Cliente.objects.get(pk=cliente)
-                historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente).order_by('-id')[:5]
                 categoria = models.Categoria.objects.get(nome=categoria)
-                despesa = models.HistoricoCliente.objects.filter(cliente=cliente.pk,despesa__isnull=False).only('despesa').order_by('-data_operacao')
-                despesa = models.Despesa.objects.filter(id__in=despesa,categoria=categoria.pk)
-                
+                despesa = models.HistoricoCliente.objects.filter(cliente=cliente,despesa__isnull=False).only('despesa')
+                despesa = models.Despesa.objects.filter(id__in=despesa.values('despesa'),categoria=categoria)
                 return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,
                                                                                 "historico_cliente":historico_cliente,
                                                                                 "despesas":despesa,
