@@ -51,6 +51,7 @@ def cadastro(request):
                 cliente.email = email
                 cliente.senha = password
                 cliente.save()
+                models.TetoDeGastos(cliente=cliente).save()
                 messages.info(request,"Conta criada com sucesso!")
                 return HttpResponseRedirect('/')
 
@@ -172,14 +173,30 @@ def add_teto_gasto(request):
             form = TetoDeGastosForm()
             cliente = models.Cliente.objects.get(pk=cliente)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-            return render(request,"CDMP_APP/add_teto_gasto.html",{"form":form,
+            return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
         elif request.method == "POST":
             geral = request.POST.get("geral")
+            print(geral)
             if geral !=None:
                 pass
             else:
-                pass
+                form = TetoDeGastosForm(request.POST)
+                if form.is_valid():
+                    cliente = models.Cliente.objects.get(pk=cliente)
+                    teto_cliente = models.TetoDeGastos.objects.get(cliente=cliente)
+                    form_teto:models.TetoDeGastos = form.save(commit=False)
+                    
+                    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                    return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
+                                                            "historico_cliente":historico_cliente})
+                else:
+                    cliente = models.Cliente.objects.get(pk=cliente)
+                    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                    return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
+                                                            "historico_cliente":historico_cliente})
+                
+
     else:
         return HttpResponseRedirect("/")
 

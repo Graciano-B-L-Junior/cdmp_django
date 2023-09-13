@@ -73,15 +73,18 @@ class HistoricoCliente(models.Model):
 
 class TetoDeGastos(models.Model):
         cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
-        janeiro = models.FloatField()
-        fevereiro = models.FloatField()
-        marco = models.FloatField()
-        abril = models.FloatField()
-        maio = models.FloatField()
-        junho = models.FloatField()
-        julho = models.FloatField()
-        agosto = models.FloatField()
-        setembro = models.FloatField()
-        outubro = models.FloatField()
-        novembro = models.FloatField()
-        dezembro = models.FloatField()
+        janeiro = models.FloatField(default=0)
+        fevereiro = models.FloatField(default=0)
+        marco = models.FloatField(default=0)
+        abril = models.FloatField(default=0)
+        maio = models.FloatField(default=0)
+        junho = models.FloatField(default=0)
+        julho = models.FloatField(default=0)
+        agosto = models.FloatField(default=0)
+        setembro = models.FloatField(default=0)
+        outubro = models.FloatField(default=0)
+        novembro = models.FloatField(default=0)
+        dezembro = models.FloatField(default=0)
+
+        def __str__(self) -> str:
+            return f"Teto de gastos cliente: {self.cliente}"

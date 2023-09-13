@@ -1,0 +1,52 @@
+{% extends "includes/base.html"%}
+{% load static %}
+{%block head-content%}
+<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_teto_gasto.css' %}">
+{%endblock%}
+{%block greater-data%}
+<div>
+    <input type="radio" name="radio" id="mensal">
+    <label for="mensal">Editar o teto de cada mês</label>
+    <br/>
+    <br/>
+    <input type="radio" name="radio" id="anual">
+    <label for="anual">Editar o teto com um valor para todos os meses</label>
+</div>
+<form id="form_mes" action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="enviar">
+</form>
+<form id="form_geral" method="POST">
+    {% csrf_token %}
+    <label for="geral">Geral:</label>
+    <input id="geral" type="number" value="0" name="geral">
+    <input type="submit" value="enviar">
+</form>
+{%endblock%}
+{%block other-content%}
+<script>
+    document.getElementById("mensal").checked=true
+    function toogle_form(){
+        let mensal = document.getElementById("mensal").checked
+        if(mensal){
+            document.getElementById("form_mes").classList.remove("hide")
+            document.getElementById("form_geral").classList.add("hide")
+        }else{
+            document.getElementById("form_geral").classList.remove("hide")
+            document.getElementById("form_mes").classList.add("hide")
+        }
+    }
+    toogle_form()
+    document.getElementById("mensal").addEventListener("click",(e)=>{
+        e.checked=true
+        toogle_form()
+    })
+    document.getElementById("anual").addEventListener("click",(e)=>{
+        e.checked=true
+        toogle_form()
+    })
+    
+
+</script>
+{%endblock%}

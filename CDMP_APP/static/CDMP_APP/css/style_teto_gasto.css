@@ -1,0 +1,24 @@
+body section.greater-data{
+    height: 100vh;
+    grid-template-rows: repeat(6, 1fr);
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+}
+
+body section.greater-data > div{
+    height: 50%;
+}
+
+form#form_mes{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+form#form_mes input[type=submit]{
+    margin-top: 10px;
+}
+
+form.hide{
+    display: none !important;
+}
