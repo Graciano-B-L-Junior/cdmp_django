@@ -8,8 +8,7 @@ $(document).ready(()=>{
         const ctx = document.getElementById('chart');
         let dataset=[]
         for(let obj in dados){
-            if(obj!="labels"){
-                console.log(obj)
+            if(obj!="labels" && obj!="teto_gasto_cliente"){
                 console.log(dados[obj])
                 dataset.push(dados[obj])
             }
@@ -17,15 +16,23 @@ $(document).ready(()=>{
         const data = {
             labels: dados.labels,
             datasets: [{
+                type: 'bar',
                 label:"valor despesa",
                 data:dataset
+            },{
+              type: 'line',
+              label:"Teto de gastos   ",
+              data:dados.teto_gasto_cliente
             }]
         };
         const config = {
-            type: 'bar',
             data: data,
             options: {
               responsive: true,
+              interaction: {
+                intersect: false,
+                mode: 'index',
+              },
               plugins: {
                 legend: {
                   position: 'top',
