@@ -488,8 +488,72 @@ def get_despesas_agrupadas_por_mes_grafico(request):
                         lista[
                             f"{mes_atual}-{lista['labels'][mes_atual-1]}"
                               ]=valor_despesa
-            print(json.dumps(lista,indent=4))
             return HttpResponse(json.dumps(lista,indent=4))
+        else:
+            return HttpResponse(status=404)
+    else:
+        return HttpResponse(status=404)
+    
+def get_economia_despesas_agrupadas_por_mes_grafico(request):
+    cliente = request.session.get("cliente")
+    if cliente !=None:
+        if request.method == "GET":
+            cliente = models.Cliente.objects.get(pk=cliente)
+            teto_gasto = models.TetoDeGastos.objects.get(cliente=cliente)
+            start_date:datetime = datetime(datetime.now().year,1,1)
+            end_date:datetime = datetime.now()
+            historico = models.HistoricoCliente.objects.filter(cliente=cliente,
+                                                               despesa__isnull=False,
+                                                               deposito__isnull=True,
+                                                               meta_financeira__isnull=True,
+                                                             data_operacao__range=(start_date,end_date))\
+                                                            .order_by("data_operacao")
+            lista_aux={}
+            lista_result={}
+            lista_result["labels"]=['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul','ago', 'set', 'out', 'nov', 'dez']
+            lista_aux["labels"]=lista_result["labels"]
+            lista_result["economias"]=[]
+            lista_aux["teto_gasto_cliente"]=[
+                teto_gasto.janeiro,teto_gasto.fevereiro,teto_gasto.marco,
+                teto_gasto.abril,teto_gasto.maio,teto_gasto.junho,
+                teto_gasto.julho,teto_gasto.agosto,teto_gasto.setembro,
+                teto_gasto.outubro,teto_gasto.novembro,teto_gasto.dezembro
+            ]
+            
+
+            for index,mes in enumerate(lista_aux["labels"]):
+                lista_aux[f"{index+1}-{mes}"]=0
+            valor_despesa=0
+            mes_atual=0
+            for index,dado in enumerate(historico):
+                
+                if index==0:
+                    mes_atual = dado.despesa.data_despesa.month
+                    valor_despesa+=dado.despesa.valor
+                    lista_aux[
+                        f"{mes_atual}-{lista_aux['labels'][mes_atual-1]}"
+                        ]=valor_despesa
+                else:
+                    if mes_atual == dado.despesa.data_despesa.month:
+                        valor_despesa+=dado.despesa.valor
+                        lista_aux[
+                            f"{mes_atual}-{lista_aux['labels'][mes_atual-1]}"
+                              ]=valor_despesa
+                    else:
+                        mes_atual = dado.despesa.data_despesa.month
+                        valor_despesa= dado.despesa.valor
+                        lista_aux[
+                            f"{mes_atual}-{lista_aux['labels'][mes_atual-1]}"
+                              ]=valor_despesa
+            
+            for index,mes in enumerate(lista_aux["labels"]):
+                if lista_aux[f"{index+1}-{mes}"]==0:
+                    lista_result["economias"].append(0)
+                else:
+                    lista_result["economias"].append(
+                        lista_aux["teto_gasto_cliente"][index]-lista_aux[f"{index+1}-{mes}"]
+                    )
+            return HttpResponse(json.dumps(lista_result,indent=4))
         else:
             return HttpResponse(status=404)
     else:

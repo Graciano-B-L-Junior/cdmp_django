@@ -3,6 +3,7 @@
 {%block head-content%}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   <script src="{% static 'CDMP_APP/js/grafico_por_mes.js' %}"></script>
+  <script src="{% static 'CDMP_APP/js/grafico_economia_por_mes.js' %}"></script>
 {%endblock%}
 {%block greater-data%}
 <div class="titulo">
@@ -27,7 +28,6 @@
 <script>
 
 const ctx = document.getElementById('chart');
-const ctx2 = document.getElementById('chart_2')
 const ctx3 = document.getElementById('chart_3')
 const config = {
   type: 'bar',
@@ -47,7 +47,6 @@ const config = {
     }
   }
 }
-new Chart(ctx2, config);
 new Chart(ctx3, config);
 </script>
 {%endblock%}
