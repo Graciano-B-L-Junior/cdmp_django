@@ -6,7 +6,7 @@ from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
     LoginForm,CadastroForm,TetoDeGastosForm
 from datetime import datetime
-from typing import List
+from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
 import json
 
 
@@ -170,33 +170,43 @@ def add_teto_gasto(request):
     cliente = request.session.get("cliente")
     if cliente !=None:
         if request.method == "GET":
-            form = TetoDeGastosForm()
             cliente = models.Cliente.objects.get(pk=cliente)
+            teto_cliente = models.TetoDeGastos.objects.get(cliente=cliente)
+            form = TetoDeGastosForm(instance=teto_cliente)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
         elif request.method == "POST":
             geral = request.POST.get("geral")
-            print(geral)
             if geral !=None:
-                pass
+                cliente = models.Cliente.objects.get(pk=cliente)
+                teto_cliente = models.TetoDeGastos.objects.get(cliente=cliente)
+                try:
+                    valor_geral = float(request.POST.get("geral"))
+                    update_teto_gastos_por_geral(teto_cliente,valor_geral)
+                    teto_cliente.save()
+                    messages.success(request, "Teto de gastos atualizado com sucesso")
+                except Exception as error:
+                    messages.error(request, "Ocorreu um erro ao atualizar os dados, tente novamente")
+                    return HttpResponseRedirect("/editar_teto")
+                
+                return HttpResponseRedirect("/editar_teto")
+                
             else:
                 form = TetoDeGastosForm(request.POST)
                 if form.is_valid():
                     cliente = models.Cliente.objects.get(pk=cliente)
                     teto_cliente = models.TetoDeGastos.objects.get(cliente=cliente)
                     form_teto:models.TetoDeGastos = form.save(commit=False)
-                    
-                    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-                    return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
-                                                            "historico_cliente":historico_cliente})
+                    update_teto_gastos(teto_cliente,form_teto)
+                    teto_cliente.save()
+                    messages.success(request, "Teto de gastos atualizado com sucesso")
+                    return HttpResponseRedirect("/editar_teto")
                 else:
                     cliente = models.Cliente.objects.get(pk=cliente)
                     historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
                     return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
-                
-
     else:
         return HttpResponseRedirect("/")
 
