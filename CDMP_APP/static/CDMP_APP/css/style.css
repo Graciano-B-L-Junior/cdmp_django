@@ -47,7 +47,7 @@ section.greater-data{
     "user ."
     "dem1 dem1"
     "canva_1 canva_1"
-    "dem2 dem3";
+    "dem2 dem2";
     gap: 15px;
 }
 .titulo{
@@ -128,4 +128,49 @@ section.mini-data #monitor{
     align-self: center;
     position: relative;
     top: 36%;
+}
+
+@media screen and (max-width: 450px){
+    body{
+        grid-template-columns: 100vw;
+        grid-template-areas: 
+        "section_1";
+    }
+    
+    section.greater-data{
+        grid-template-rows: none;
+    }
+    section.mini-data{
+        display: none;
+    }
+    body > nav{
+        padding: 0px;
+        height: 100%; /* 100% Full-height */
+        width: 100%; /* 0 width - change this with JavaScript */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Stay on top */
+        top: 0; /* Stay at the top */
+        left: 0;
+        background-color: #111; /* Black*/
+        overflow-x: hidden; /* Disable horizontal scroll */
+        padding-top: 60px; /* Place content 60px from the top */
+        transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    }
+    nav a{
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+    nav a:hover{
+        color: #f1f1f1;
+    }
+    nav a.closebtn{
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
 }
