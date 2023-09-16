@@ -5,3 +5,11 @@ section.greater-data{
 .edit-despesa button{
     cursor: pointer;
 }
+
+form{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 160px;
+    justify-content: space-around;
+}

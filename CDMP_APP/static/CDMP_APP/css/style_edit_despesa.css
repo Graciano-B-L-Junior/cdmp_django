@@ -1,6 +1,7 @@
 form{
     display: flex;
     flex-direction: column;
+    height: 300px;
 }
 form input{
     flex-shrink: 0;
@@ -15,4 +16,18 @@ form select{
 form input[type=submit]{
     text-align: center;
     width: 150px;
+}
+@media screen and (max-width: 450px){
+    body section.greater-data{
+        grid-template-rows: 40px 1fr;
+        grid-template-areas: 
+        "nav_menu  nav_menu" 
+        "user    user" 
+        "dem1    dem1" 
+        "canva_1 canva_1" 
+        "dem2    dem2";
+    }
+    body section.greater-data button.show-menu{
+        height: 40px;
+    }
 }
