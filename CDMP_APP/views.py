@@ -4,13 +4,10 @@ from django.contrib import messages
 from . import models
 from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
-    LoginForm,CadastroForm,TetoDeGastosForm
+    LoginForm,CadastroForm,TetoDeGastosForm,CadastroCategoria
 from datetime import datetime
 from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
 import json
-
-
-
 # Create your views here.
 
 def login(request):
@@ -86,6 +83,13 @@ def add_gasto(request):
                 categoria = form.cleaned_data["categoria"]
                 cliente = models.Cliente.objects.get(pk=cliente)
                 categoria = models.Categoria.objects.get(nome=categoria)
+                aux_valor = float(valor)
+                if aux_valor < 0:
+                    messages.error(request,"valor negativo não permitido!")
+                    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                    return render(request,"CDMP_APP/add_gasto.html",{"form":form,
+                                                                    "historico_cliente":historico_cliente,
+                                                                    "message":"Preencha os campos corretamente"})
                 despesa = models.Despesa(valor=valor,descricao=descricao,data_despesa=data_gasto,cliente=cliente,categoria=categoria)
                 historico_cliente = models.HistoricoCliente(cliente=cliente,data_operacao=data_gasto,operacao=descricao,despesa=despesa)
                 despesa.save()
@@ -357,6 +361,15 @@ def edit_despesa(request,id):
                 despesa.categoria =  models.Categoria.objects.get(nome=form.cleaned_data["categoria"])
                 despesa.descricao = form.cleaned_data["descricao"]
                 despesa.data_despesa = form.cleaned_data["data_despesa"]
+                if despesa.valor < 0:
+                    messages.error(request,"valor negativo não permitido!")
+                    cliente = models.Cliente.objects.get(pk=cliente)
+                    historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                    context={
+                            "form":form,
+                            "historico_cliente":historico_cliente
+                        }
+                    return render(request,"CDMP_APP/edit_despesa.html",context)
                 despesa.save()
                 page = request.GET.get("page")
 
@@ -558,3 +571,35 @@ def get_economia_despesas_agrupadas_por_mes_grafico(request):
             return HttpResponse(status=404)
     else:
         return HttpResponse(status=404)
+    
+def cadastrar_categoria(request):
+    cliente = request.session.get("cliente")
+    if cliente !=None:
+        if request.method == "GET":
+            form = CadastroCategoria()
+            cliente = models.Cliente.objects.get(pk=cliente)
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/cadastro_categoria.html",{
+                "form":form,"historico_cliente":historico_cliente
+            })
+        elif request.method == "POST":
+            form = CadastroCategoria(request.POST)
+            if form.is_valid():
+                nome = form.cleaned_data["nome"]
+                new_categoria = models.Categoria()
+                new_categoria.nome = nome
+                new_categoria.data_criacao = datetime.now()
+                cliente = models.Cliente.objects.get(pk=cliente)
+                new_categoria.cliente = cliente
+                messages.success(request,"Categoria criada com sucesso")
+                new_categoria.save()
+                return HttpResponseRedirect("/adicionar_categoria")
+            else:
+                cliente = models.Cliente.objects.get(pk=cliente)
+                historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                return render(request,"CDMP_APP/cadastro_categoria.html",{
+                "form":form,"historico_cliente":historico_cliente
+                })
+
+    else:
+        return HttpResponseRedirect("/")

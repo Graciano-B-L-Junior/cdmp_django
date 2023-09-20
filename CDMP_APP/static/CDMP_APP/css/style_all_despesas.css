@@ -10,6 +10,8 @@ form{
     display: flex;
     flex-direction: column;
     width: 150px;
-    height: 160px;
     justify-content: space-around;
+}
+form > * {
+    margin: 3px 0;
 }

@@ -8,6 +8,7 @@ urlpatterns = [
     path('sair',views.logoff,name="sair"),
     path('adicionar_despesa',views.add_gasto,name="add_despesa"),
     path('adicionar_deposito',views.add_deposito,name='add_deposito'),
+    path('adicionar_categoria',views.cadastrar_categoria,name='add_categoria'),
     path('editar_teto',views.add_teto_gasto,name="edit_teto"),
     path('vizualizar_historico/<int:id>',views.treat_route,name="view_history"),
     path('vizualizar_gastos',views.view_all_despesas,name="view_all_gastos"),

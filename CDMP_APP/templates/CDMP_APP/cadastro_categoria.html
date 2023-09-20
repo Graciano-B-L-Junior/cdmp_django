@@ -1,7 +1,7 @@
 {%extends "includes/base.html"%}
 {% load static %}
 {%block head-content%}
-<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_edit_despesa.css' %}">
+<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_cadastro_categoria.css' %}">
 {%endblock%}
 {%block greater-data%}
 <form action="" method="post">
@@ -15,5 +15,5 @@
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
-        {% endif %}
+{% endif %}
 {%endblock%}

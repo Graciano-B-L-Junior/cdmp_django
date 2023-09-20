@@ -1,12 +1,20 @@
-body section.greater-data{
-    height: 100vh;
-    grid-template-rows: repeat(6, 1fr);
-    grid-template-columns: 1fr;
-    grid-template-areas: none;
-}
+
 
 body section.greater-data > div{
     height: 50%;
+    grid-area: div;
+}
+body section.greater-data{
+    height: 100vh;
+    grid-template-columns: 3fr;
+    grid-template-rows: 70px;
+    grid-template-areas: 
+    "div div div"
+    "form form form";
+}
+
+body form{
+    grid-area: form;
 }
 
 form#form_mes{
@@ -21,4 +29,17 @@ form#form_mes input[type=submit]{
 
 form.hide{
     display: none !important;
+}
+
+@media screen and (max-width: 450px) {
+    body section.greater-data{
+        height: 100vh;
+        
+        grid-template-columns: 3fr;
+        grid-template-rows: 40px 70px auto;
+        grid-template-areas: 
+        "nav_menu nav_menu nav_menu"
+        "div div div"
+        "form form form";
+    }
 }

@@ -1,0 +1,19 @@
+@media screen and (max-width: 450px) {
+    form {
+        display: flex;
+        flex-direction: column;
+        height: 300px;
+    }
+    form > *{
+        margin: 3px 0px;
+    }
+    body section.greater-data {
+    grid-template-rows: 40px 1fr;
+    grid-template-areas:
+    "nav_menu nav_menu" 
+    "user     user    " 
+    "dem1     dem1    " 
+    "canva_1  canva_1 " 
+    "dem2     dem2    ";
+    }
+}
