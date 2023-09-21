@@ -19,14 +19,14 @@
             <h4>Menu</h4>
             <ul>
                 <li>
-                    <a href="{% url 'index' %}">Home</a>  <canvas width="50" height="50"></canvas>
+                    <a href="{% url 'index' %}">Home</a>  <canvas class="home" width="50" height="50"></canvas>
                 </li>
                 <li>
-                    <a href="{% url 'sair' %}">Sair</a>  <canvas width="50" height="50"></canvas>
+                    <a href="{% url 'sair' %}">Sair</a>  <canvas class="sair" width="50" height="50"></canvas>
                 </li>
-                <li><a href="{% url 'add_despesa' %}">Adicionar despesa</a> <canvas width="50" height="50"></canvas>
+                <li><a href="{% url 'add_despesa' %}">Adicionar despesa</a> <canvas class="despesa" width="50" height="50"></canvas>
                 </li>
-                <li><a href="{% url 'add_deposito' %}">Adicionar deposito</a> <canvas width="50" height="50"></canvas>
+                <li><a href="{% url 'add_deposito' %}">Adicionar deposito</a> <canvas class="deposito" width="50" height="50"></canvas>
                 </li>
                 <li><a href="{% url 'edit_teto' %}">Editar teto de gastos</a> <canvas width="50" height="50"></canvas>
                 </li>
@@ -78,6 +78,91 @@
         function closeNav() {
         document.getElementById("nav").style.width = "0";
         } 
+    </script>
+    <script>
+        //animações
+        //adicionar deposito
+        let deposito_canvas = document.querySelector(".deposito")
+        let context = deposito_canvas.getContext('2d')
+        let coins = new Image()
+        coins.src = `/static/CDMP_APP/imgs/Sprites/coins/coins_16x16.png`
+        let index_coin=0
+        setInterval(()=>{
+            index_coin++
+            if(index_coin > 14){
+                index_coin=0
+            }
+            context.imageSmoothingEnabled = false
+            context.clearRect(0, 0, deposito_canvas.width, deposito_canvas.height);
+            context.drawImage(coins,
+            16*index_coin,0,
+            16,16,
+            0,0,
+            16*3,16*3)
+        },100)
+        //sair
+        let sair_canvas = document.querySelector(".sair")
+        let context_sair = sair_canvas.getContext('2d')
+        let pop_sair = new Image()
+        pop_sair.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes142.png`
+        let index_pop_up=0
+        setInterval(()=>{
+            index_pop_up++
+            if(index_pop_up > 2){
+                index_pop_up=0
+            }
+            context_sair.imageSmoothingEnabled = false
+            context_sair.clearRect(0, 0, sair_canvas.width, sair_canvas.height);
+            context_sair.drawImage(
+            pop_sair,
+            (pop_sair.width/3)*index_pop_up,0,
+            (pop_sair.width/3),(pop_sair.height),
+            0,0,
+            (pop_sair.width/3)*1.5,pop_sair.height*1.5)
+        },250)
+        //home
+        let home_canvas = document.querySelector(".home")
+        let context_home = home_canvas.getContext('2d')
+        let pop_home = new Image()
+        pop_home.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes140.png`
+        let index_pop_up_home=0
+        setInterval(()=>{
+            index_pop_up_home++
+            if(index_pop_up_home > 2){
+                index_pop_up_home=0
+            }
+            context_home.imageSmoothingEnabled = false
+            context_home.clearRect(0, 0, home_canvas.width, home_canvas.height);
+            context_home.drawImage(
+            pop_home,
+            (pop_home.width/3)*index_pop_up_home,0,
+            (pop_home.width/3),(pop_home.height),
+            0,0,
+            (pop_home.width/3)*1.5,pop_home.height*1.5)
+        },250)
+        //adicionar despesa
+        let despesa_canvas = document.querySelector(".home")
+        let context_despesa = despesa_canvas.getContext('2d')
+        let coin_img = new Image()
+        coin_img.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes140.png`
+        let index_coin_move=0
+        let coin_pos_y =0
+        setInterval(()=>{
+            index_coin_move++
+            coin_pos_y+=10
+            if(index_coin_move > 2){
+                coin_pos_y = index_coin_move >= 1 ? 10: coin_pos_y
+                index_coin_move=0
+            }
+            context_despesa.imageSmoothingEnabled = false
+            context_despesa.clearRect(0, 0, despesa_canvas.width, despesa_canvas.height);
+            context_despesa.drawImage(
+            coin_img,
+            0,0,
+            coin_img.width,coin_img.height,
+            coin_pos_y,0,
+            coin_img.width*1.5,coin_img.height*1.5)
+        },250)
     </script>
 </body>
 </html>

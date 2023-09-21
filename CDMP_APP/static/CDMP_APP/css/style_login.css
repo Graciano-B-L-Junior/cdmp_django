@@ -2,3 +2,23 @@
     font-family: 'Nunito', sans-serif;
     font-family: 'Roboto', sans-serif;
 }
+body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media screen and (max-width: 450px) {
+    body{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    section.login form{
+       display: flex;
+       flex-direction: column; 
+    }
+    section.login form *{
+        width: 50%;
+        margin-top: 5px;
+    }
+}
