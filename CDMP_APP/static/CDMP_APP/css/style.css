@@ -11,7 +11,6 @@ button.show-menu{
     cursor: pointer;
 }
 canvas{
-    border: 1px solid #ccc;
     border-radius: 15px;
 }
 body{
@@ -20,11 +19,19 @@ body{
     grid-template-areas: 
     "nav section_1 section_2";
     grid-template-columns: 250px 1fr 300px;
+    overflow-y: hidden;
+    border-radius: 10%;
 }
 nav{
+    background-color: #000000;
     padding: 20px;
     grid-area: nav;
     height: 100%;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+nav h4{
+    color: #ffffff;
 }
 nav .links > a{
     display: none;
@@ -33,21 +40,33 @@ ul{
     list-style: none;
 }
 ul li{
+    padding: 10px;
+    background-color: #fefefe;
+    border-radius: 30px;
     display: flex;
     align-items: center;
     margin: 10px 10px;
     justify-content: space-between;
+    -webkit-box-shadow: 0px 4px 31px -11px rgba(0,0,0,0.59);
+    -moz-box-shadow: 0px 4px 31px -11px rgba(0,0,0,0.59);
+    box-shadow: 0px 4px 31px -11px rgba(0,0,0,0.59);
 }
 ul.ultimas-atividades li{
     justify-content: start;
 }
 ul li a{
+    text-decoration: none;
     margin-right: 10px;
+    font-weight: bold;
+    color: #000000;
+    
+}
+ul li a:visited{
+    color: #000000;
 }
 section.greater-data{
     grid-area: section_1;
     height: 100%;
-    border-right: 2px solid #ccc;
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -59,6 +78,10 @@ section.greater-data{
     "canva_1 canva_1"
     "dem2 dem2";
     gap: 15px;
+}
+
+section.greater-data .dem1,section.greater-data .dem2{
+    background-color: #f8f8f8;
 }
 .titulo{
     grid-area: titulo;
@@ -94,12 +117,8 @@ section.greater-data{
 }
 
 .dem1,.dem2, .dem3{
-    border: 1px solid #ccc;
     border-radius: 30px;
     padding: 10px;
-    -webkit-box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
-    -moz-box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
-    box-shadow: -1px 3px 30px 0px rgba(0,0,0,0.3);
 }
 
 .dem2{
@@ -113,11 +132,14 @@ section.greater-data{
 }
 
 section.mini-data{
+    background-color: #f8f8f8;
     grid-area: section_2;
     padding: 20px;
     display: flex;
     flex-direction: column;
     height: 100%;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
 }
 
 section.mini-data ul li{
