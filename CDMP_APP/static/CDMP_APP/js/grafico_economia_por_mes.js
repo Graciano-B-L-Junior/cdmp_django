@@ -6,9 +6,16 @@ $(document).ready(()=>{
     .done((response)=>{
         let dados = JSON.parse(response)
         const ctx = document.getElementById('chart_2');
+        var colors = []
+        for(var i = 0; i < dados.economias.length; i++){
+          var color;
+          color = dados.economias[i] > 0 ? "rgba(71, 255, 71, 0.35)" : "rgba(255, 0, 0, 0.49)"
+          colors[i] = color;
+        }
         const data = {
             labels: dados.labels,
             datasets: [{
+                backgroundColor:colors,
                 type: 'bar',
                 label:"Economia",
                 data:dados.economias
