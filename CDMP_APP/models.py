@@ -37,33 +37,22 @@ class Despesa(models.Model):
     def __str__(self) -> str:
         return self.descricao
     
-class Depositos(models.Model):
+class Receitas(models.Model):
     valor = models.FloatField()
     descricao = models.CharField(max_length=50)
-    data_deposito = models.DateTimeField(default=timezone.now)
+    data_receita = models.DateTimeField(default=timezone.now)
     cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
     class Meta:
-        verbose_name="Deposito"
-        verbose_name_plural="Depositos"
+        verbose_name="Receita"
+        verbose_name_plural="Receitas"
 
     def __str__(self) -> str:
         return self.descricao
 
-class MetaFinanceira(models.Model):
-    nome_meta = models.CharField(max_length=50)
-    valor_atual = models.FloatField()
-    icone = models.CharField(max_length=50,null=True,blank=True)
-    valor_total = models.FloatField()
-    cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
-
-    def __str__(self) -> str:
-        return self.nome_meta
-
 class HistoricoCliente(models.Model):
     cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
     despesa = models.ForeignKey(Despesa,null=True,on_delete=models.CASCADE)
-    deposito = models.ForeignKey(Depositos,null=True,on_delete=models.CASCADE)
-    meta_financeira = models.ForeignKey(MetaFinanceira,null=True,on_delete=models.CASCADE)
+    receita = models.ForeignKey(Receitas,null=True,on_delete=models.CASCADE)
     operacao = models.CharField(max_length=100)
     data_operacao = models.DateTimeField()
     class Meta:
@@ -90,3 +79,12 @@ class TetoDeGastos(models.Model):
 
         def __str__(self) -> str:
             return f"Teto de gastos cliente: {self.cliente}"
+        
+
+class TetoDeGastosPorCategoria(models.Model):
+    cliente = models.ForeignKey(Cliente,on_delete=models.CASCADE)
+    categoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
+    teto = models.FloatField(default=0)
+
+    def __str__(self) -> str:
+        return f"Teto de gastos da categoria: {self.categoria}"

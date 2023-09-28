@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     {%block head-content%}{%endblock%}
 </head>
 <body>
@@ -18,29 +19,36 @@
             <h4>Menu</h4>
             <ul>
                 <li>
-                    <a href="{% url 'index' %}">Home</a>  <canvas class="home" width="50" height="50"></canvas>
+                    <a href="{% url 'index' %}">Home</a> 
                 </li>
                 <li>
-                    <a href="{% url 'sair' %}">Sair</a>  <canvas class="sair" width="50" height="50"></canvas>
+                    <a href="{% url 'sair' %}">Sair</a> 
                 </li>
-                <li><a href="{% url 'add_despesa' %}">Adicionar despesa</a> <canvas class="despesa" width="50" height="50"></canvas>
+                <li>
+                    <a href="{% url 'add_despesa' %}">Adicionar despesa</a>
                 </li>
-                <li><a href="{% url 'add_deposito' %}">Adicionar deposito</a> <canvas class="deposito" width="50" height="50"></canvas>
+                <li>
+                    <a href="{% url 'add_receita' %}">Adicionar receita</a> 
                 </li>
-                <li><a href="{% url 'edit_teto' %}">Editar teto de gastos</a> <canvas class="teto" width="50" height="50"></canvas>
+                <li>
+                    <a href="{% url 'edit_teto' %}">Editar teto de gastos</a>
                 </li>
-                <li><a href="{% url 'add_categoria' %}">Cadastrar Categoria</a> <canvas class="categoria" width="50" height="50"></canvas>
+                <li>
+                    <a href="{% url 'add_categoria' %}">Cadastrar Categoria</a>
+                </li>
+                <li>
+                    <a href="{% url 'edit_teto' %}">Editar teto de Categoria</a>
                 </li>
             </ul>
         </div>
         <div class="links">
             <h4>Despesas</h4>
             <ul>
-                <li><a href="{% url 'view_all_gastos' %}">Pesquisar por nome</a> <canvas class="pesquisa_nome" width="50" height="50"></canvas>
+                <li><a href="{% url 'view_all_gastos' %}">Pesquisar por nome</a>
                 </li>
-                <li> <a href="{% url 'despesa_por_categoria' %}">Pesquisar por categoria</a> <canvas class="pesquisa_categoria" width="50" height="50"></canvas>
+                <li> <a href="{% url 'despesa_por_categoria' %}">Pesquisar por categoria</a>
                 </li>
-                <li> <a href="{% url 'despesa_por_data' %}">Pesquisar por data</a> <canvas class="data" width="50" height="50"></canvas>
+                <li> <a href="{% url 'despesa_por_data' %}">Pesquisar por data</a>
                 </li>
             </ul>
         </div>
@@ -53,16 +61,17 @@
         
     </section>
     <section class="mini-data">
-        <h3>Ultimas atividades</h3>
+        <h3>Operações recentes</h3>
             <ul class="ultimas-atividades">
                 {% if historico_cliente %}
                     {% for historico in historico_cliente %}
                         <li>
-                            <canvas width="50" height="50"></canvas>
                             <a href="{% url 'view_history' id=historico.pk %}" ><p>{{historico.operacao}}</p></a>
-                            <!--<p>{{historico.data_operacao}}</p>-->
                         </li>
                     {% endfor%}
+                {%else%}
+                    <br>
+                    <h4>Nenhuma operação realizada</h4>
                 {% endif %}
             </ul>
             <canvas id="monitor"></canvas>
@@ -77,224 +86,6 @@
         function closeNav() {
         document.getElementById("nav").style.width = "0";
         } 
-    </script>
-    <script>
-        //animações
-        //adicionar deposito
-        let deposito_canvas = document.querySelector(".deposito")
-        let context = deposito_canvas.getContext('2d')
-        let coins = new Image()
-        coins.src = `/static/CDMP_APP/imgs/Sprites/coins/coins_16x16.png`
-        let index_coin=0
-        setInterval(()=>{
-            index_coin++
-            if(index_coin > 14){
-                index_coin=0
-            }
-            context.imageSmoothingEnabled = false
-            context.clearRect(0, 0, deposito_canvas.width, deposito_canvas.height);
-            context.drawImage(coins,
-            16*index_coin,0,
-            16,16,
-            0,0,
-            16*3,16*3)
-        },100)
-        //sair
-        let sair_canvas = document.querySelector(".sair")
-        let context_sair = sair_canvas.getContext('2d')
-        let pop_sair = new Image()
-        pop_sair.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes142.png`
-        let index_pop_up=0
-        setInterval(()=>{
-            index_pop_up++
-            if(index_pop_up > 2){
-                index_pop_up=0
-            }
-            context_sair.imageSmoothingEnabled = false
-            context_sair.clearRect(0, 0, sair_canvas.width, sair_canvas.height);
-            context_sair.drawImage(
-            pop_sair,
-            (pop_sair.width/3)*index_pop_up,0,
-            (pop_sair.width/3),(pop_sair.height),
-            0,0,
-            (pop_sair.width/3)*1.5,pop_sair.height*1.5)
-        },250)
-        //home
-        let home_canvas = document.querySelector(".home")
-        let context_home = home_canvas.getContext('2d')
-        let pop_home = new Image()
-        pop_home.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes140.png`
-        let index_pop_up_home=0
-        setInterval(()=>{
-            index_pop_up_home++
-            if(index_pop_up_home > 2){
-                index_pop_up_home=0
-            }
-            context_home.imageSmoothingEnabled = false
-            context_home.clearRect(0, 0, home_canvas.width, home_canvas.height);
-            context_home.drawImage(
-            pop_home,
-            (pop_home.width/3)*index_pop_up_home,0,
-            (pop_home.width/3),(pop_home.height),
-            0,0,
-            (pop_home.width/3)*1.5,pop_home.height*1.5)
-        },250)
-        //adicionar despesa
-        let despesa_canvas = document.querySelector(".despesa")
-        let context_despesa = despesa_canvas.getContext('2d')
-        let coin_img = new Image()
-        coin_img.src = `/static/CDMP_APP/imgs/Sprites/coins/coin.png`
-        let index_coin_move=0
-        let coin_pos_y =0
-        setInterval(()=>{
-            index_coin_move++
-            switch(index_coin_move){
-                case 0:
-                    coin_pos_y=0
-                    break
-                case 1:
-                    coin_pos_y=5
-                    break
-                case 2:
-                    coin_pos_y=0
-            }
-            if(index_coin_move==2){
-                index_coin_move=0
-            }
-            context_despesa.imageSmoothingEnabled = false
-            context_despesa.clearRect(0, 0, despesa_canvas.width, despesa_canvas.height);
-            context_despesa.drawImage(
-            coin_img,
-            0,0,
-            coin_img.width,coin_img.height,
-            0,coin_pos_y,
-            coin_img.width*1.5,coin_img.height*1.5)
-        },250)
-        //teto de gastos
-        let teto_canvas = document.querySelector(".teto")
-        let context_teto = teto_canvas.getContext('2d')
-        let pop_teto = new Image()
-        pop_teto.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes051.png`
-        let index_pop_up_teto=0
-        setInterval(()=>{
-            index_pop_up_teto++
-            if(index_pop_up_teto > 2){
-                index_pop_up_teto=0
-            }
-            context_teto.imageSmoothingEnabled = false
-            context_teto.clearRect(0, 0, teto_canvas.width, teto_canvas.height);
-            context_teto.drawImage(
-            pop_teto,
-            (pop_teto.width/3)*index_pop_up_teto,0,
-            (pop_teto.width/3),(pop_teto.height),
-            0,0,
-            (pop_teto.width/3)*1.5,pop_teto.height*1.5)
-        },250)
-        //cadastrar categoria
-        let categoria = document.querySelector(".categoria")
-        let context_categoria = categoria.getContext('2d')
-        let pop_categoria = new Image()
-        pop_categoria.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes069.png`
-        let index_pop_up_categoria=0
-        setInterval(()=>{
-            index_pop_up_categoria++
-            if(index_pop_up_categoria > 2){
-                index_pop_up_categoria=0
-            }
-            context_categoria.imageSmoothingEnabled = false
-            context_categoria.clearRect(0, 0, categoria.width, categoria.height);
-            context_categoria.drawImage(
-            pop_categoria,
-            (pop_categoria.width/3)*index_pop_up_categoria,0,
-            (pop_categoria.width/3),(pop_categoria.height),
-            0,0,
-            (pop_categoria.width/3)*1.5,pop_categoria.height*1.5)
-        },250)
-        //pesquisar por data
-        let data = document.querySelector(".data")
-        let context_data = data.getContext('2d')
-        let pop_data = new Image()
-        pop_data.src = `/static/CDMP_APP/imgs/Sprites/pop_up/pipo-popupemotes073.png`
-        let index_pop_up_data=0
-        setInterval(()=>{
-            index_pop_up_data++
-            if(index_pop_up_data > 2){
-                index_pop_up_data=0
-            }
-            context_data.imageSmoothingEnabled = false
-            context_data.clearRect(0, 0, data.width, data.height);
-            context_data.drawImage(
-            pop_data,
-            (pop_data.width/3)*index_pop_up_data,0,
-            (pop_data.width/3),(pop_data.height),
-            0,0,
-            (pop_data.width/3)*1.5,pop_data.height*1.5)
-        },250)
-        // pesquisar por nome
-        let pesquisa_nome_canvas = document.querySelector(".pesquisa_nome")
-        let context_pesquisa_nome = pesquisa_nome_canvas.getContext('2d')
-        let lupa_img = new Image()
-        lupa_img.src = `/static/CDMP_APP/imgs/Sprites/others/lupa.png`
-        let index_lupa_move=0
-        let lupa_pos_y =0
-        setInterval(()=>{
-            index_lupa_move++
-            switch(index_lupa_move){
-                case 0:
-                    lupa_pos_y=0
-                    break
-                case 1:
-                    lupa_pos_y=5
-                    break
-                case 2:
-                    lupa_pos_y=0
-            }
-            if(index_lupa_move==2){
-                index_lupa_move=0
-            }
-            context_pesquisa_nome.imageSmoothingEnabled = false
-            
-            context_pesquisa_nome.clearRect(0, 0, 
-            pesquisa_nome_canvas.width, 
-            pesquisa_nome_canvas.height);
-            
-            context_pesquisa_nome.drawImage(
-            lupa_img,
-            0,0,
-            lupa_img.width,lupa_img.height,
-            0,lupa_pos_y,
-            32*1.5,32*1.5)
-        },250)
-        // pesquisar por categoria
-        let pesquisa_categoria_canvas = document.querySelector(".pesquisa_categoria")
-        let context_pesquisa_categoria = pesquisa_categoria_canvas.getContext('2d')
-        let categorias_imgs = []
-        let index_aux =0
-        for(let i=7;i<=10;i++){
-            categorias_imgs.push(new Image())
-            categorias_imgs[index_aux].src = i < 10 ? `/static/CDMP_APP/imgs/Sprites/pop_up/categorias/pipo-popupemotes09${i}.png` :
-            `/static/CDMP_APP/imgs/Sprites/pop_up/categorias/pipo-popupemotes100.png`
-            index_aux++
-        }
-        index_aux=0
-        setInterval(()=>{
-            
-            index_aux = index_aux > 3 ? 0 : index_aux
-
-            context_pesquisa_categoria.imageSmoothingEnabled = false
-            
-            context_pesquisa_categoria.clearRect(0, 0, 
-            pesquisa_categoria_canvas.width, 
-            pesquisa_categoria_canvas.height);
-            
-            context_pesquisa_categoria.drawImage(
-            categorias_imgs[index_aux],
-            0,0,
-            categorias_imgs[index_aux].width/3,categorias_imgs[index_aux].height,
-            0,0,
-            32*1.5,32*1.5)
-            index_aux++
-        },500)
     </script>
 </body>
 </html>

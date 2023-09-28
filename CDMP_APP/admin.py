@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Categoria,Cliente,Depositos,Despesa,MetaFinanceira,HistoricoCliente,TetoDeGastos
+from .models import Categoria,Cliente,Receitas,Despesa,HistoricoCliente,TetoDeGastos
 
 
 class ClienteAdmin(admin.ModelAdmin):
@@ -14,8 +14,7 @@ class HistoricoClienteAdmin(admin.ModelAdmin):
 
 admin.site.register(Categoria)
 admin.site.register(Cliente,ClienteAdmin)
-admin.site.register(Depositos)
+admin.site.register(Receitas)
 admin.site.register(Despesa)
 admin.site.register(HistoricoCliente,HistoricoClienteAdmin)
-admin.site.register(MetaFinanceira)
 admin.site.register(TetoDeGastos)

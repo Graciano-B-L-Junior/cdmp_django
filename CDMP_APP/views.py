@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from . import models
-from .forms import DespesaForm,DepositoForm,MetaFinanceiraForm,\
+from .forms import DespesaForm,ReceitasForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
     LoginForm,CadastroForm,TetoDeGastosForm,CadastroCategoria
 from datetime import datetime
+from .scripts.generate_categories_for_client import generate_Categories
 from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
 import json
 # Create your views here.
@@ -49,6 +50,7 @@ def cadastro(request):
                 cliente.senha = password
                 cliente.save()
                 models.TetoDeGastos(cliente=cliente).save()
+                generate_Categories(cliente)
                 messages.info(request,"Conta criada com sucesso!")
                 return HttpResponseRedirect('/')
 
@@ -109,18 +111,18 @@ def add_gasto(request):
     else:
         return HttpResponseRedirect("/")
 
-def add_deposito(request):
+def add_receita(request):
     cliente = request.session.get("cliente")
     if cliente !=None:
         if request.method == "POST":
-            form = DepositoForm(request.POST)
+            form = ReceitasForm(request.POST)
             if form.is_valid():
-                deposito:models.Depositos = form.save(commit=False)
+                receita:models.Receitas = form.save(commit=False)
                 cliente = models.Cliente.objects.get(pk=cliente)
-                deposito.cliente = cliente
-                historico_cliente = models.HistoricoCliente(cliente=cliente,data_operacao=deposito.data_deposito,
-                                                            deposito=deposito,operacao=deposito.descricao)
-                deposito.save()
+                receita.cliente = cliente
+                historico_cliente = models.HistoricoCliente(cliente=cliente,data_operacao=receita.data_receita,
+                                                            receita=receita,operacao=receita.descricao)
+                receita.save()
                 historico_cliente.save()
 
                 return HttpResponseRedirect('/home')
@@ -131,7 +133,7 @@ def add_deposito(request):
                                                                     "historico_cliente":historico_cliente,
                                                                     "message":"Preencha os campos corretamente"})
         else:
-            form = DepositoForm()
+            form = ReceitasForm()
             cliente = models.Cliente.objects.get(pk=cliente)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
         return render(request,"CDMP_APP/add_deposito.html",{"form":form,
@@ -139,36 +141,6 @@ def add_deposito(request):
     else:
         return HttpResponseRedirect("/")
 
-def add_meta_financeira(request):
-    cliente = request.session.get("cliente")
-    if cliente !=None:
-        if request.method == "POST":
-            form = MetaFinanceiraForm(request.POST)
-            if form.is_valid():
-                meta_financeira:models.MetaFinanceira = form.save(commit=False)
-                cliente = models.Cliente.objects.get(pk=cliente)
-                meta_financeira.cliente = cliente
-                historico_cliente = models.HistoricoCliente(cliente=cliente,data_operacao=datetime.now(),
-                                                            meta_financeira=meta_financeira,
-                                                            operacao=meta_financeira.nome_meta)
-                meta_financeira.save()
-                historico_cliente.save()
-
-                return HttpResponseRedirect('/home')
-            else:
-                cliente = models.Cliente.objects.get(pk=cliente)
-                historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-                return render(request,"CDMP_APP/add_meta.html",{"form":form,
-                                                                "historico_cliente":historico_cliente,
-                                                                "message":"Preencha os campos corretamente"})
-        else:
-            form = MetaFinanceiraForm()
-            cliente = models.Cliente.objects.get(pk=cliente)
-            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-            return render(request,"CDMP_APP/add_meta.html",{"form":form,
-                                                            "historico_cliente":historico_cliente})
-    else:
-        return HttpResponseRedirect("/")
     
 def add_teto_gasto(request):
     cliente = request.session.get("cliente")
@@ -218,34 +190,13 @@ def treat_route(request,id):
     cliente = request.session.get("cliente")
     if cliente !=None:
         historico = models.HistoricoCliente.objects.get(pk=id)
-        if historico.meta_financeira != None:
-            return view_meta_financeira(request,id)
-        elif historico.despesa != None:
+        if historico.despesa != None:
             return view_despesa(request,id)
-        elif historico.deposito != None:
+        elif historico.receita != None:
             return view_deposito(request,id)
     else:
         return HttpResponseRedirect("/")
     
-def view_meta_financeira(request,id):
-    cliente = request.session.get("cliente")
-    if cliente !=None:
-        if request.method == "GET":
-            meta_financeira = models.HistoricoCliente.objects.get(pk=id).meta_financeira
-            cliente = models.Cliente.objects.get(pk=cliente)
-            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-            context={
-                "nome":meta_financeira.nome_meta,
-                "valor_atual":meta_financeira.valor_atual,
-                "valor_total":meta_financeira.valor_total,
-                "historico_cliente":historico_cliente
-            }
-            return render(request,"CDMP_APP/view_meta_financeira.html",context)
-        else:
-            request.session.pop("cliente")
-            return HttpResponseRedirect('/home')
-    else:
-        return HttpResponseRedirect("/")
     
 def view_despesa(request,id):
     cliente = request.session.get("cliente")
@@ -272,13 +223,13 @@ def view_deposito(request,id):
     cliente = request.session.get("cliente")
     if cliente !=None:
         if request.method == "GET":
-            deposito = models.HistoricoCliente.objects.get(pk=id).deposito
+            receita = models.HistoricoCliente.objects.get(pk=id).receita
             cliente = models.Cliente.objects.get(pk=cliente)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             context={
-                "nome":deposito.descricao,
-                "valor":deposito.valor,
-                "data_despesa":deposito.data_deposito.strftime("%d/%m/%Y"),
+                "nome":receita.descricao,
+                "valor":receita.valor,
+                "data_despesa":receita.data_receita.strftime("%d/%m/%Y"),
                 "historico_cliente":historico_cliente
             }
             return render(request,"CDMP_APP/view_deposito.html",context)
@@ -464,8 +415,7 @@ def get_despesas_agrupadas_por_mes_grafico(request):
             end_date:datetime = datetime.now()
             historico = models.HistoricoCliente.objects.filter(cliente=cliente,
                                                                despesa__isnull=False,
-                                                               deposito__isnull=True,
-                                                               meta_financeira__isnull=True,
+                                                               receita__isnull=True,                                                            
                                                              data_operacao__range=(start_date,end_date))\
                                                             .order_by("data_operacao")
             lista={}
@@ -517,8 +467,7 @@ def get_economia_despesas_agrupadas_por_mes_grafico(request):
             end_date:datetime = datetime.now()
             historico = models.HistoricoCliente.objects.filter(cliente=cliente,
                                                                despesa__isnull=False,
-                                                               deposito__isnull=True,
-                                                               meta_financeira__isnull=True,
+                                                               receita__isnull=True,                                                               
                                                              data_operacao__range=(start_date,end_date))\
                                                             .order_by("data_operacao")
             lista_aux={}

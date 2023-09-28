@@ -1,6 +1,6 @@
 from django import forms
 from datetime import datetime
-from .models import Categoria,Depositos,MetaFinanceira,TetoDeGastos
+from .models import Categoria,Receitas,TetoDeGastos
 
 def set_choices_categoria() -> tuple:
         categorias = Categoria.objects.raw("""
@@ -23,33 +23,12 @@ class DespesaForm(forms.Form):
     data_despesa = forms.DateField(widget=forms.DateInput(attrs={'type':'date','max':datetime.now().date}))
     categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria)
 
-class DepositoForm(forms.ModelForm):
+class ReceitasForm(forms.ModelForm):
       class Meta:
-            model = Depositos
-            fields = ["valor","descricao","data_deposito"]
+            model = Receitas
+            fields = ["valor","descricao","data_receita"]
             widgets ={
-                  "data_deposito":forms.DateInput(attrs={'type':'date','max':datetime.now().date})
-            }
-
-class MetaFinanceiraForm(forms.ModelForm):
-      class Meta:
-            model = MetaFinanceira
-            fields = ["nome_meta","valor_atual","valor_total"]
-            widgets = {
-                  "valor_atual":forms.NumberInput(),
-                  "valor_total":forms.NumberInput()
-            }
-            labels={
-                  "valor_atual":("Valor atual"),
-                  "nome_meta":("Nome da meta financeira"),
-            }
-            error_messages={
-                  "valor_atual":{
-                        "invalid":"Preencha apenas com valores numéricos"
-                  },
-                  "valor_total":{
-                        "invalid":"Preencha apenas com valores numéricos"
-                  }
+                  "data_receita":forms.DateInput(attrs={'type':'date','max':datetime.now().date})
             }
 
 class TetoDeGastosForm(forms.ModelForm):

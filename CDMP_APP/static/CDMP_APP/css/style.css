@@ -12,6 +12,7 @@ button.show-menu{
 }
 canvas{
     border-radius: 15px;
+    display: none;
 }
 body{
     height: 100vh;
