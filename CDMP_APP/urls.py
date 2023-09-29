@@ -10,6 +10,7 @@ urlpatterns = [
     path('adicionar_deposito',views.add_receita,name='add_receita'),
     path('adicionar_categoria',views.cadastrar_categoria,name='add_categoria'),
     path('editar_teto',views.add_teto_gasto,name="edit_teto"),
+    path('editar_teto_categoria',views.set_teto_categoria,name="set_teto_categoria"),
     path('vizualizar_historico/<int:id>',views.treat_route,name="view_history"),
     path('vizualizar_gastos',views.view_all_despesas,name="view_all_gastos"),
     path('editar_despesa/<int:id>',views.edit_despesa,name="edit_despesa"),

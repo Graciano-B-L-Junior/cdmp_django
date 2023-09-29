@@ -3,9 +3,9 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import messages
 from . import models
-from .forms import DespesaForm,ReceitasForm,\
+from .forms import DespesaForm, FormSelectFielCategoryByClient,ReceitasForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
-    LoginForm,CadastroForm,TetoDeGastosForm,CadastroCategoria
+    LoginForm,CadastroForm,TetoDeGastosForm,CadastroCategoria,TetoDeGastosCategoriaForm
 from datetime import datetime
 from .scripts.generate_categories_for_client import generate_Categories
 from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
@@ -78,7 +78,7 @@ def add_gasto(request):
     cliente = request.session.get("cliente")
     if cliente !=None:
         if request.method == "POST":
-            form = DespesaForm(request.POST,cliente_id=cliente)
+            form = DespesaForm(cliente,request.POST,)
             if form.is_valid():
                 descricao = form.cleaned_data["descricao"]
                 valor = form.cleaned_data["valor"]
@@ -184,6 +184,24 @@ def add_teto_gasto(request):
                     cliente = models.Cliente.objects.get(pk=cliente)
                     historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
                     return render(request,"CDMP_APP/edit_teto_gasto.html",{"form":form,
+                                                            "historico_cliente":historico_cliente})
+    else:
+        return HttpResponseRedirect("/")
+
+def set_teto_categoria(request):
+    cliente = request.session.get("cliente")
+    if cliente !=None:
+        if request.method == "GET" and request.GET.get("categoria") == None:
+            form = FormSelectFielCategoryByClient(cliente)
+            cliente = models.Cliente.objects.get(pk=cliente)
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/set_teto_category.html",{"form":form,
+                                                            "historico_cliente":historico_cliente})
+        elif request.GET.get("categoria") != None:
+            
+            cliente = models.Cliente.objects.get(pk=cliente)
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/set_teto_category.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
     else:
         return HttpResponseRedirect("/")

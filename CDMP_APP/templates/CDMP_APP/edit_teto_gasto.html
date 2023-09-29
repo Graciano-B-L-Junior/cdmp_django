@@ -1,9 +1,16 @@
 {% extends "includes/base.html"%}
 {% load static %}
 {%block head-content%}
-<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_teto_gasto.css' %}">
+<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_teto_categoria.css' %}">
 {%endblock%}
 {%block greater-data%}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div>
     <input type="radio" name="radio" id="mensal">
     <label for="mensal">Editar o teto de cada mês</label>
@@ -23,13 +30,7 @@
     <input id="geral" type="number" value="0" name="geral">
     <input type="submit" value="enviar">
 </form>
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
+
 {%endblock%}
 {%block other-content%}
 <script>

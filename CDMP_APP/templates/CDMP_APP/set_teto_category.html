@@ -1,0 +1,46 @@
+{% extends "includes/base.html"%}
+{% load static %}
+{%block head-content%}
+<link rel="stylesheet" href="{% static 'CDMP_APP/css/style_teto_categoria.css' %}">
+{%endblock%}
+{%block greater-data%}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form id="form_mes" action="" method="GET">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="enviar">
+</form>
+
+{%endblock%}
+{%block other-content%}
+<script>
+    // document.getElementById("mensal").checked=true
+    // function toogle_form(){
+    //     let mensal = document.getElementById("mensal").checked
+    //     if(mensal){
+    //         document.getElementById("form_mes").classList.remove("hide")
+    //         document.getElementById("form_geral").classList.add("hide")
+    //     }else{
+    //         document.getElementById("form_geral").classList.remove("hide")
+    //         document.getElementById("form_mes").classList.add("hide")
+    //     }
+    // }
+    // toogle_form()
+    // document.getElementById("mensal").addEventListener("click",(e)=>{
+    //     e.checked=true
+    //     toogle_form()
+    // })
+    // document.getElementById("anual").addEventListener("click",(e)=>{
+    //     e.checked=true
+    //     toogle_form()
+    // })
+    
+
+</script>
+{%endblock%}

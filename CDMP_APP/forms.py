@@ -2,9 +2,11 @@ from collections.abc import Mapping
 from typing import Any
 from django import forms
 from datetime import datetime
+from django.core.files.base import File
+from django.db.models.base import Model
 
 from django.forms.utils import ErrorList
-from .models import Categoria,Receitas,TetoDeGastos
+from .models import Categoria,Receitas,TetoDeGastos,TetoDeGastosPorCategoria
 from CDMP_APP.scripts.get_categoria_by_cliente import set_choices_categoria
 
 
@@ -21,8 +23,6 @@ class DespesaForm(forms.Form):
     descricao = forms.CharField(max_length=50)
     data_despesa = forms.DateField(widget=forms.DateInput(attrs={'type':'date','max':datetime.now().date}))
     categoria = forms.ChoiceField(widget=forms.Select)
-
-
 
 class ReceitasForm(forms.ModelForm):
       class Meta:
@@ -54,6 +54,17 @@ class TetoDeGastosForm(forms.ModelForm):
                   "novembro":forms.NumberInput(),
                   "dezembro":forms.NumberInput(),
             }
+
+class TetoDeGastosCategoriaForm(forms.ModelForm):
+      def __init__(self, *args,**kwargs) -> None:
+            super().__init__(*args,**kwargs)
+
+      class Meta:
+            model = TetoDeGastosPorCategoria
+            fields = ["categoria","teto"]
+            widgets = {
+                  "teto":forms.NumberInput(),
+            }
                       
 class QueryDespesaPorNomeForm(forms.Form):
       nome = forms.CharField()
@@ -67,6 +78,12 @@ class QueryDespesaPorDataForm(forms.Form):
       ))
 
 class QueryDespesaPorCategoriaForm(forms.Form):
+      def __init__(self,cliente_id="",*args,**kwargs) -> None:
+            super().__init__(*args,**kwargs)
+            if cliente_id !="":
+                  self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(cliente_id))
+            else:
+                  raise Exception("cliente_id cannot be empty")
       categoria = forms.ChoiceField(widget=forms.Select,choices="")
 
 class LoginForm(forms.Form):
@@ -83,3 +100,12 @@ class CadastroCategoria(forms.ModelForm):
       class Meta:
             model = Categoria
             fields = ["nome"]
+
+class FormSelectFielCategoryByClient(forms.Form):
+      def __init__(self,cliente_id="",*args,**kwargs) -> None:
+            super().__init__(*args,**kwargs)
+            if cliente_id !="":
+                  self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(cliente_id))
+            else:
+                  raise Exception("cliente_id cannot be empty")
+      categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(0))
