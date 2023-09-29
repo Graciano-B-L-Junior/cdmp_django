@@ -1,27 +1,28 @@
+from collections.abc import Mapping
+from typing import Any
 from django import forms
 from datetime import datetime
-from .models import Categoria,Receitas,TetoDeGastos
 
-def set_choices_categoria() -> tuple:
-        categorias = Categoria.objects.raw("""
-            SELECT 
-            *
-            FROM
-            CDMP_APP_categoria
-            WHERE (cliente_id IS NULL OR cliente_id = 7);            
-            """)
-        tupla= tuple()
-        lista=[]
-        for categoria in categorias:
-              lista.append(categoria.nome)
-        tupla = ((categoria,categoria) for categoria in lista)
-        return tupla
+from django.forms.utils import ErrorList
+from .models import Categoria,Receitas,TetoDeGastos
+from CDMP_APP.scripts.get_categoria_by_cliente import set_choices_categoria
+
+
 
 class DespesaForm(forms.Form):
+    def __init__(self,cliente_id="",*args,**kwargs) -> None:
+      super().__init__(*args,**kwargs)
+      if cliente_id !="":
+            self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(cliente_id))
+      else:
+            raise Exception("cliente_id cannot be empty")
+      
     valor = forms.FloatField(error_messages={"invalid":"Preencha o campo apenas com números"})
     descricao = forms.CharField(max_length=50)
     data_despesa = forms.DateField(widget=forms.DateInput(attrs={'type':'date','max':datetime.now().date}))
-    categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria)
+    categoria = forms.ChoiceField(widget=forms.Select)
+
+
 
 class ReceitasForm(forms.ModelForm):
       class Meta:
@@ -66,7 +67,7 @@ class QueryDespesaPorDataForm(forms.Form):
       ))
 
 class QueryDespesaPorCategoriaForm(forms.Form):
-      categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria)
+      categoria = forms.ChoiceField(widget=forms.Select,choices="")
 
 class LoginForm(forms.Form):
       email = forms.EmailField(label="E-mail")

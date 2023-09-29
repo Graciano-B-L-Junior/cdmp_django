@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib import messages
@@ -77,7 +78,7 @@ def add_gasto(request):
     cliente = request.session.get("cliente")
     if cliente !=None:
         if request.method == "POST":
-            form = DespesaForm(request.POST)
+            form = DespesaForm(request.POST,cliente_id=cliente)
             if form.is_valid():
                 descricao = form.cleaned_data["descricao"]
                 valor = form.cleaned_data["valor"]
@@ -104,7 +105,8 @@ def add_gasto(request):
                                                                 "historico_cliente":historico_cliente,
                                                                 "message":"Preencha os campos corretamente"})
         else:
-            form = DespesaForm()
+            form = DespesaForm(cliente_id=cliente)
+            
             cliente = models.Cliente.objects.get(pk=cliente)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
         return render(request,"CDMP_APP/add_gasto.html",{"form":form,"historico_cliente":historico_cliente})
