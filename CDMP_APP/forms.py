@@ -61,7 +61,7 @@ class TetoDeGastosCategoriaForm(forms.ModelForm):
 
       class Meta:
             model = TetoDeGastosPorCategoria
-            fields = ["categoria","teto"]
+            fields = ["teto"]
             widgets = {
                   "teto":forms.NumberInput(),
             }

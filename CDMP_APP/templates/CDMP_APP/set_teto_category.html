@@ -11,8 +11,11 @@
     {% endfor %}
 </ul>
 {% endif %}
-<form id="form_mes" action="" method="GET">
+<form id="set_category" action="" method="GET">
     {% csrf_token %}
+    {%if categoria_texto %}
+        <p>{{categoria_texto}}</p>
+    {% endif %}
     {{ form }}
     <input type="submit" value="enviar">
 </form>

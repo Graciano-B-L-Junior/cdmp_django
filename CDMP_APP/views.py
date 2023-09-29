@@ -198,10 +198,17 @@ def set_teto_categoria(request):
             return render(request,"CDMP_APP/set_teto_category.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
         elif request.GET.get("categoria") != None:
-            
             cliente = models.Cliente.objects.get(pk=cliente)
+            categoria =models.Categoria.objects.get(
+                cliente=cliente,
+                nome=request.GET.get("categoria")
+            )
+            teto = models.TetoDeGastosPorCategoria(cliente=cliente,categoria=categoria)
+            form = TetoDeGastosCategoriaForm(instance=teto)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-            return render(request,"CDMP_APP/set_teto_category.html",{"form":form,
+            return render(request,"CDMP_APP/set_teto_category.html",{
+                                                            "form":form,
+                                                            "categoria_texto":f"Categoria selecionada: {categoria.nome}",
                                                             "historico_cliente":historico_cliente})
     else:
         return HttpResponseRedirect("/")
