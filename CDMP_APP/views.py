@@ -10,6 +10,7 @@ from datetime import datetime
 from .scripts.generate_categories_for_client import generate_Categories
 from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
 import json
+from django.db.models import Sum
 # Create your views here.
 
 def login(request):
@@ -377,7 +378,39 @@ def edit_despesa(request,id):
             return render(request,"CDMP_APP/edit_despesa.html",context)
     else:
         return HttpResponseRedirect("/")
-    
+
+def cadastrar_categoria(request):
+    cliente = request.session.get("cliente")
+    if cliente !=None:
+        if request.method == "GET":
+            form = CadastroCategoria()
+            cliente = models.Cliente.objects.get(pk=cliente)
+            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+            return render(request,"CDMP_APP/cadastro_categoria.html",{
+                "form":form,"historico_cliente":historico_cliente
+            })
+        elif request.method == "POST":
+            form = CadastroCategoria(request.POST)
+            if form.is_valid():
+                nome = form.cleaned_data["nome"]
+                new_categoria = models.Categoria()
+                new_categoria.nome = nome
+                new_categoria.data_criacao = datetime.now()
+                cliente = models.Cliente.objects.get(pk=cliente)
+                new_categoria.cliente = cliente
+                messages.success(request,"Categoria criada com sucesso")
+                new_categoria.save()
+                return HttpResponseRedirect("/adicionar_categoria")
+            else:
+                cliente = models.Cliente.objects.get(pk=cliente)
+                historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+                return render(request,"CDMP_APP/cadastro_categoria.html",{
+                "form":form,"historico_cliente":historico_cliente
+                })
+
+    else:
+        return HttpResponseRedirect("/")
+
 def view_despesa_por_categoria(request):
     cliente = request.session.get("cliente")
     if cliente !=None:
@@ -563,34 +596,36 @@ def get_economia_despesas_agrupadas_por_mes_grafico(request):
     else:
         return HttpResponse(status=404)
     
-def cadastrar_categoria(request):
-    cliente = request.session.get("cliente")
-    if cliente !=None:
-        if request.method == "GET":
-            form = CadastroCategoria()
-            cliente = models.Cliente.objects.get(pk=cliente)
-            historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-            return render(request,"CDMP_APP/cadastro_categoria.html",{
-                "form":form,"historico_cliente":historico_cliente
-            })
-        elif request.method == "POST":
-            form = CadastroCategoria(request.POST)
-            if form.is_valid():
-                nome = form.cleaned_data["nome"]
-                new_categoria = models.Categoria()
-                new_categoria.nome = nome
-                new_categoria.data_criacao = datetime.now()
-                cliente = models.Cliente.objects.get(pk=cliente)
-                new_categoria.cliente = cliente
-                messages.success(request,"Categoria criada com sucesso")
-                new_categoria.save()
-                return HttpResponseRedirect("/adicionar_categoria")
-            else:
-                cliente = models.Cliente.objects.get(pk=cliente)
-                historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
-                return render(request,"CDMP_APP/cadastro_categoria.html",{
-                "form":form,"historico_cliente":historico_cliente
-                })
-
+def get_gastos_por_categoria(request):
+    # cliente = request.session.get("cliente")
+    # if cliente !=None:
+    #     if request.method == "GET":
+    #         cliente=models.Cliente.objects.get(pk=cliente)
+    #         categorias_cliente=models.Categoria.objects.filter(
+    #             cliente_id=cliente
+    #         )
+    #         despesas=models.Despesa.objects.filter(
+    #             cliente_id=cliente,
+    #             categoria_id__in=categorias_cliente
+    #         )
+    #         print(despesas)
+    #         return HttpResponse("oi")
+    #     else:
+    #         return HttpResponse(status=404)
+    # else:
+    #     return HttpResponse(status=404)
+    
+    if request.method == "GET":
+        cliente=models.Cliente.objects.get(pk=request.GET.get('id'))
+        categorias_cliente=models.Categoria.objects.filter(
+            cliente_id=cliente
+        )
+        despesas=models.Despesa.objects.filter(
+            cliente_id=cliente,
+            categoria_id__in=categorias_cliente
+        ).values('categoria_id').annotate(soma=Sum('valor'))
+        print(despesas)
+        return HttpResponse("oi")
     else:
-        return HttpResponseRedirect("/")
+        return HttpResponse(status=404)
+            

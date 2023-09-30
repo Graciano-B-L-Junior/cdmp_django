@@ -72,13 +72,11 @@ section.greater-data{
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 70px 70px 300px 100px 200px;
+    grid-template-rows: 70px 350px 300px 100px 200px;
     grid-template-areas: 
     "titulo titulo"
-    "user ."
-    "dem1 dem1"
-    "canva_1 canva_1"
-    "dem2 dem2";
+    "user dem3"
+    "dem1 dem2";
     gap: 15px;
     overflow-y: scroll;
 }
@@ -132,6 +130,7 @@ section.greater-data .dem1,section.greater-data .dem2{
 .dem3{
     grid-area: dem3 ;
     padding: 10px;
+    justify-self: center;
 }
 
 section.mini-data{
