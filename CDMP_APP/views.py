@@ -197,7 +197,7 @@ def set_teto_categoria(request):
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             return render(request,"CDMP_APP/set_teto_category.html",{"form":form,
                                                             "historico_cliente":historico_cliente})
-        elif request.GET.get("categoria") != None:
+        elif request.method == "GET" and request.GET.get("categoria") != None:
             cliente = models.Cliente.objects.get(pk=cliente)
             categoria =models.Categoria.objects.get(
                 cliente=cliente,
@@ -208,8 +208,23 @@ def set_teto_categoria(request):
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
             return render(request,"CDMP_APP/set_teto_category.html",{
                                                             "form":form,
+                                                            "form_post":True,
+                                                            "categoria_nome_input_hidden":categoria.nome,
                                                             "categoria_texto":f"Categoria selecionada: {categoria.nome}",
                                                             "historico_cliente":historico_cliente})
+        elif request.method == "POST":
+            form = TetoDeGastosCategoriaForm(request.POST)
+            if form.is_valid():
+                cliente = models.Cliente.objects.get(pk=cliente)
+                categoria =models.Categoria.objects.get(
+                    cliente=cliente,
+                    nome=request.POST.get("categoria")
+                )
+                teto_categoria = models.TetoDeGastosPorCategoria.objects.get(cliente=cliente,categoria=categoria)
+                teto_categoria.teto = request.POST.get("teto")
+                teto_categoria.save()
+                messages.success(request,f"Teto da categoria {teto_categoria.categoria.nome} definida com sucesso!")
+                return HttpResponseRedirect("/editar_teto_categoria")
     else:
         return HttpResponseRedirect("/")
 

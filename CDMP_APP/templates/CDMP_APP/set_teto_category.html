@@ -11,6 +11,17 @@
     {% endfor %}
 </ul>
 {% endif %}
+{%if form_post%}
+<form id="set_category" action="" method="POST">
+    {% csrf_token %}
+    {%if categoria_texto %}
+        <p>{{categoria_texto}}</p>
+    {% endif %}
+    {{ form }}
+    <input type="hidden" value="{{categoria_nome_input_hidden}}" name="categoria">
+    <input type="submit" value="enviar">
+</form>
+{%else%}
 <form id="set_category" action="" method="GET">
     {% csrf_token %}
     {%if categoria_texto %}
@@ -19,6 +30,7 @@
     {{ form }}
     <input type="submit" value="enviar">
 </form>
+{% endif%}
 
 {%endblock%}
 {%block other-content%}
