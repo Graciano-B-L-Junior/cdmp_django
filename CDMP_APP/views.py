@@ -1,6 +1,7 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
+from django.core import serializers
 from django.contrib import messages
 from . import models
 from .forms import DespesaForm, FormSelectFielCategoryByClient,ReceitasForm,\
@@ -333,7 +334,7 @@ def edit_despesa(request,id):
     if cliente !=None:
         if request.method == "GET":
             despesa = models.Despesa.objects.get(pk=id)
-            form = DespesaForm(initial={
+            form = DespesaForm(cliente,initial={
                 "valor":despesa.valor,
                 "data_despesa":despesa.data_despesa,
                 "descricao":despesa.descricao,
@@ -416,13 +417,13 @@ def view_despesa_por_categoria(request):
     if cliente !=None:
         page_redirect=""
         if request.method == "GET":
-            form = QueryDespesaPorCategoriaForm()
+            form = QueryDespesaPorCategoriaForm(cliente_id=cliente)
             cliente = models.Cliente.objects.get(pk=cliente)
             historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente).order_by('-id')[:5]
             return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,"historico_cliente":historico_cliente})
         elif request.method == "POST":
             page_redirect="?page=visualizar_despesas_por_categoria"
-            form = QueryDespesaPorCategoriaForm(request.POST)
+            form = QueryDespesaPorCategoriaForm(cliente,request.POST)
             if form.is_valid():
                 categoria = form.cleaned_data["categoria"]
                 cliente = models.Cliente.objects.get(pk=cliente)
@@ -597,35 +598,43 @@ def get_economia_despesas_agrupadas_por_mes_grafico(request):
         return HttpResponse(status=404)
     
 def get_gastos_por_categoria(request):
-    # cliente = request.session.get("cliente")
-    # if cliente !=None:
-    #     if request.method == "GET":
-    #         cliente=models.Cliente.objects.get(pk=cliente)
-    #         categorias_cliente=models.Categoria.objects.filter(
-    #             cliente_id=cliente
-    #         )
-    #         despesas=models.Despesa.objects.filter(
-    #             cliente_id=cliente,
-    #             categoria_id__in=categorias_cliente
-    #         )
-    #         print(despesas)
-    #         return HttpResponse("oi")
-    #     else:
-    #         return HttpResponse(status=404)
-    # else:
-    #     return HttpResponse(status=404)
-    
-    if request.method == "GET":
-        cliente=models.Cliente.objects.get(pk=request.GET.get('id'))
-        categorias_cliente=models.Categoria.objects.filter(
-            cliente_id=cliente
-        )
-        despesas=models.Despesa.objects.filter(
-            cliente_id=cliente,
-            categoria_id__in=categorias_cliente
-        ).values('categoria_id').annotate(soma=Sum('valor'))
-        print(despesas)
-        return HttpResponse("oi")
+    cliente = request.session.get("cliente")
+    if cliente !=None:
+        if request.method == "GET":
+            cliente=models.Cliente.objects.get(pk=cliente)
+            categorias_cliente=models.Categoria.objects.filter(
+                cliente_id=cliente
+            )
+            despesas=models.Despesa.objects.filter(
+                cliente_id=cliente,
+                categoria_id__in=categorias_cliente
+            ).values('categoria__nome').annotate(soma=Sum('valor'))
+            
+            res_json={}
+            for x in despesas:
+                res_json[x["categoria__nome"]]=x["soma"]
+
+            return HttpResponse(json.dumps(res_json),content_type='application/json')
+        else:
+            return HttpResponse(status=404)
     else:
         return HttpResponse(status=404)
+    
+    # if request.method == "GET":
+    #     cliente=models.Cliente.objects.get(pk=request.GET.get('id'))
+    #     categorias_cliente=models.Categoria.objects.filter(
+    #         cliente_id=cliente
+    #     )
+    #     despesas=models.Despesa.objects.filter(
+    #         cliente_id=cliente,
+    #         categoria_id__in=categorias_cliente
+    #     ).values('categoria__nome').annotate(soma=Sum('valor'))
+        
+    #     res_json={}
+    #     for x in despesas:
+    #         res_json[x["categoria__nome"]]=x["soma"]
+
+    #     return HttpResponse(json.dumps(res_json),content_type='application/json')
+    # else:
+    #     return HttpResponse(status=404)
             
