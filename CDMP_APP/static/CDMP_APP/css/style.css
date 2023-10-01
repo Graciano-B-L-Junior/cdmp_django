@@ -72,10 +72,11 @@ section.greater-data{
     padding: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 70px 350px 300px 100px 200px;
+    grid-template-rows: 70px 70px 500px 300px 100px 200px;
     grid-template-areas: 
     "titulo titulo"
-    "user dem3"
+    "user user"
+    "dem3 dem3"
     "dem1 dem2";
     gap: 15px;
     overflow-y: scroll;
