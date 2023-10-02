@@ -7,7 +7,7 @@ from . import models
 from .forms import DespesaForm, FormSelectFielCategoryByClient,ReceitasForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
     LoginForm,CadastroForm,TetoDeGastosForm,CadastroCategoria,TetoDeGastosCategoriaForm
-from datetime import datetime
+from datetime import datetime,timedelta,date
 from .scripts.generate_categories_for_client import generate_Categories
 from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
 import json
@@ -540,7 +540,7 @@ def get_economia_despesas_agrupadas_por_mes_grafico(request):
             cliente = models.Cliente.objects.get(pk=cliente)
             teto_gasto = models.TetoDeGastos.objects.get(cliente=cliente)
             start_date:datetime = datetime(datetime.now().year,1,1)
-            end_date:datetime = datetime.now()
+            end_date:datetime = datetime.now().replace(day=1) - timedelta(days=1)            
             historico = models.HistoricoCliente.objects.filter(cliente=cliente,
                                                                despesa__isnull=False,
                                                                receita__isnull=True,                                                               
@@ -605,9 +605,13 @@ def get_gastos_por_categoria(request):
             categorias_cliente=models.Categoria.objects.filter(
                 cliente_id=cliente
             )
+            end_date=datetime.now()
+            start_date=datetime(end_date.year,end_date.month,1)
             despesas=models.Despesa.objects.filter(
                 cliente_id=cliente,
-                categoria_id__in=categorias_cliente
+                categoria_id__in=categorias_cliente,
+                data_despesa__lte=end_date,
+                data_despesa__gte=start_date
             ).values('categoria__nome').annotate(soma=Sum('valor'))
             
             res_json={}
@@ -620,21 +624,37 @@ def get_gastos_por_categoria(request):
     else:
         return HttpResponse(status=404)
     
-    # if request.method == "GET":
-    #     cliente=models.Cliente.objects.get(pk=request.GET.get('id'))
-    #     categorias_cliente=models.Categoria.objects.filter(
-    #         cliente_id=cliente
-    #     )
-    #     despesas=models.Despesa.objects.filter(
-    #         cliente_id=cliente,
-    #         categoria_id__in=categorias_cliente
-    #     ).values('categoria__nome').annotate(soma=Sum('valor'))
-        
-    #     res_json={}
-    #     for x in despesas:
-    #         res_json[x["categoria__nome"]]=x["soma"]
+def get_gastos_categoria_x_teto_gastos_categoria(request):
+    cliente = request.session.get("cliente")
+    if cliente!=None:
+        if request.method == "GET":
+            cliente=models.Cliente.objects.get(pk=cliente)
+            categorias_cliente=models.Categoria.objects.filter(
+                cliente_id=cliente
+            )
+            teto_por_categoria = models.TetoDeGastosPorCategoria.objects.filter(
+                cliente=cliente,
+                categoria__in=categorias_cliente
+            )
+            end_date=datetime.now().replace(day=1) - timedelta(days=1)
+            start_date=datetime(end_date.year,end_date.month,1)
+            despesas=models.Despesa.objects.filter(
+                cliente_id=cliente,
+                categoria_id__in=categorias_cliente,
+                data_despesa__lte=end_date,
+                data_despesa__gte=start_date
+            ).values('categoria','valor',).annotate(total=Sum('valor'))
+            res_json={}
+            for teto in teto_por_categoria:
+                for despesa in despesas:
+                    if teto.categoria.pk == despesa["categoria"]:
+                        res_json[teto.categoria.nome]={
+                            "teto":teto.teto,
+                            "gastos":despesa["valor"]
+                        }
 
-    #     return HttpResponse(json.dumps(res_json),content_type='application/json')
-    # else:
-    #     return HttpResponse(status=404)
-            
+            return HttpResponse(json.dumps(res_json),content_type='application/json')
+        else:
+            return HttpResponse(status=404)
+    else:
+        return HttpResponse(status=404)

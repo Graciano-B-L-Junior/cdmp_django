@@ -5,6 +5,7 @@
   <script src="{% static 'CDMP_APP/js/grafico_por_mes.js' %}"></script>
   <script src="{% static 'CDMP_APP/js/grafico_economia_por_mes.js' %}"></script>
   <script src="{% static 'CDMP_APP/js/grafico_categoria_mes.js' %}"></script>
+  <script src="{% static 'CDMP_APP/js/grafico_categoria_x_teto_categoria.js' %}"></script>
 {%endblock%}
 {%block greater-data%}
 <div class="titulo">
@@ -24,7 +25,10 @@
     <canvas id="chart_2" style="height: 100%;width: 100%;"></canvas>
 </div>
 <div class="dem3">
-    <canvas id="chart_3" style="height: 100%;width: 100%;"></canvas>
+    <canvas id="chart_3"></canvas>
+</div>
+<div class="dem4">
+    <canvas id="chart_4"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 {%endblock%}

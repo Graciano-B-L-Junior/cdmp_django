@@ -25,7 +25,7 @@ $(document).ready(()=>{
           },
           title: {
             display: true,
-            text: 'Gastos por categoria'
+            text: 'Gastos por categoria mês atual'
           }
         }
       },

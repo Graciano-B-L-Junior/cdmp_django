@@ -13,6 +13,8 @@ button.show-menu{
 canvas{
     border-radius: 15px;
     display: none;
+    width: 100%;
+    height: 100%;
 }
 body{
     height: 100vh;
@@ -76,14 +78,10 @@ section.greater-data{
     grid-template-areas: 
     "titulo titulo"
     "user user"
-    "dem3 dem3"
-    "dem1 dem2";
+    "dem3 dem1"
+    "dem4 dem2";
     gap: 15px;
     overflow-y: scroll;
-}
-
-section.greater-data .dem1,section.greater-data .dem2{
-    background-color: #f8f8f8;
 }
 .titulo{
     grid-area: titulo;
@@ -110,17 +108,14 @@ section.greater-data .dem1,section.greater-data .dem2{
     grid-area: dem1;
     border-radius: 30px;
     padding: 20px;
+
 }
 
-.canva_1{
-    grid-area: canva_1;
-    width: 100%;
-    height: 100px;
-}
 
-.dem1,.dem2, .dem3{
+.dem1,.dem2, .dem3, .dem4{
     border-radius: 30px;
     padding: 10px;
+    background-color: #f8f8f8;
 }
 
 .dem2{
@@ -131,7 +126,14 @@ section.greater-data .dem1,section.greater-data .dem2{
 .dem3{
     grid-area: dem3 ;
     padding: 10px;
-    justify-self: center;
+    text-align: center;
+}
+.dem3 canvas{
+    margin: 0 auto;
+}
+
+.dem4{
+    grid-area: dem4;
 }
 
 section.mini-data{
