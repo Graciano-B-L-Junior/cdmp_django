@@ -19,5 +19,6 @@ urlpatterns = [
     path('get/gastos_por_mes',views.get_despesas_agrupadas_por_mes_grafico,name="gastos_por_mes"),
     path('get/economias_por_mes',views.get_economia_despesas_agrupadas_por_mes_grafico,name="economias_por_mes"),
     path('get/gastos_por_categoria',views.get_gastos_por_categoria,name="gastos_por_categoria"),
-    path('get/gastos_por_categoria_x_teto_categoria',views.get_gastos_categoria_x_teto_gastos_categoria,name="categoria_x_teto_categoria")
+    path('get/gastos_por_categoria_x_teto_categoria',views.get_gastos_categoria_x_teto_gastos_categoria,name="categoria_x_teto_categoria"),
+    path('get/all_despesas',views.get_all_despesas,name="get_all_despesas"),
 ]

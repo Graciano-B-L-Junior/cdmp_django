@@ -658,3 +658,19 @@ def get_gastos_categoria_x_teto_gastos_categoria(request):
             return HttpResponse(status=404)
     else:
         return HttpResponse(status=404)
+    
+def get_all_despesas(request):
+    historicos = models.HistoricoCliente.objects.filter(
+        cliente=models.Cliente.objects.get(pk=2),
+        despesa__isnull=False,
+        receita__isnull=True,
+    )
+    response={}
+    for historico in historicos:
+        response[historico.despesa.pk]={
+            "descricao":historico.despesa.descricao,
+            "valor":historico.despesa.valor,
+            "data":historico.despesa.data_despesa.strftime("%d-%m-%Y"),
+            "categoria":historico.despesa.categoria.nome
+        }
+    return HttpResponse(json.dumps(response,ensure_ascii=False),content_type='application/json')
