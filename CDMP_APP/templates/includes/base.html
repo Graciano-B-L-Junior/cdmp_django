@@ -19,36 +19,87 @@
             <h4>Menu</h4>
             <ul>
                 <li>
-                    <a href="{% url 'index' %}">Home</a> 
+                    <a href="{% url 'index' %}">
+                        <span class="material-icons">home</span>
+                        <p>Home</p>
+                    </a> 
                 </li>
                 <li>
-                    <a href="{% url 'sair' %}">Sair</a> 
+                    <a href="{% url 'sair' %}">
+                        <span class="material-icons">
+                            logout
+                        </span>
+                        <p>Logout</p>
+                    </a> 
                 </li>
                 <li>
-                    <a href="{% url 'add_despesa' %}">Adicionar despesa</a>
+                    <a href="{% url 'add_despesa' %}">
+                        <span class="material-icons">
+                            receipt
+                        </span>
+                        <p>Despesa</p>
+                    </a>
                 </li>
                 <li>
-                    <a href="{% url 'add_receita' %}">Adicionar receita</a> 
+                    <a href="{% url 'add_receita' %}">
+                        <span class="material-icons">
+                            savings
+                        </span>
+                        <p>Receita</p>
+                    </a> 
                 </li>
                 <li>
-                    <a href="{% url 'edit_teto' %}">Editar teto de gastos</a>
+                    <a href="{% url 'edit_teto' %}">
+                        <span class="material-icons">
+                            data_thresholding
+                        </span>
+                        <p>Teto Gastos</p>
+                    </a>
                 </li>
                 <li>
-                    <a href="{% url 'add_categoria' %}">Cadastrar Categoria</a>
+                    <a href="{% url 'add_categoria' %}">
+                        <span class="material-icons">
+                            app_registration
+                        </span>
+                        <p>Adicionar Categoria</p>
+                    </a>
                 </li>
                 <li>
-                    <a href="{% url 'set_teto_categoria' %}">Editar teto de Categoria</a>
+                    <a href="{% url 'set_teto_categoria' %}">
+                        <span class="material-icons">
+                            data_thresholding
+                        </span>
+                        <p>Teto Categoria</p></a>
                 </li>
             </ul>
         </div>
         <div class="links">
             <h4>Despesas</h4>
             <ul>
-                <li><a href="{% url 'view_all_gastos' %}">Pesquisar por nome</a>
+                <li><a href="{% url 'view_all_gastos' %}">
+                    <span class="material-icons">
+                        drive_file_rename_outline
+                    </span>
+                    <p>Ver despesas</p>
+                </a>
                 </li>
-                <li> <a href="{% url 'despesa_por_categoria' %}">Pesquisar por categoria</a>
+                <li> <a href="{% url 'despesa_por_categoria' %}">
+                    <span class="material-icons">
+                        category
+                    </span>
+                    <p>
+                        Despesas categoria
+                    </p>
+                </a>
                 </li>
-                <li> <a href="{% url 'despesa_por_data' %}">Pesquisar por data</a>
+                <li> <a href="{% url 'despesa_por_data' %}">
+                    <span class="material-icons">
+                        calendar_today
+                    </span>
+                    <p>
+                        Despesas datas
+                    </p>
+                </a>
                 </li>
             </ul>
         </div>

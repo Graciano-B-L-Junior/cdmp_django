@@ -1,13 +1,14 @@
 from django import forms
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
-from django.core import serializers
 from django.contrib import messages
+
+from CDMP_APP.scripts.get_despesas_by_user import get_all_despesas_by_user
 from . import models
 from .forms import DespesaForm, FormSelectFielCategoryByClient,ReceitasForm,\
     QueryDespesaPorNomeForm,QueryDespesaPorDataForm,QueryDespesaPorCategoriaForm,\
     LoginForm,CadastroForm,TetoDeGastosForm,CadastroCategoria,TetoDeGastosCategoriaForm
-from datetime import datetime,timedelta,date
+from datetime import datetime,timedelta
 from .scripts.generate_categories_for_client import generate_Categories
 from .scripts.aux_teto_cliente_update import update_teto_gastos,update_teto_gastos_por_geral
 import json
@@ -68,9 +69,12 @@ def index(request):
     if cliente != None:
         cliente = models.Cliente.objects.get(pk=cliente)
         historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
+        despesas = get_all_despesas_by_user(request)
+        print(despesas)
         context = {
             "cliente":cliente,
-            "historico_cliente":historico_cliente
+            "historico_cliente":historico_cliente,
+            "despesas":despesas
         }
         return render(request,'CDMP_APP/index.html',context)
     else:
@@ -658,19 +662,25 @@ def get_gastos_categoria_x_teto_gastos_categoria(request):
             return HttpResponse(status=404)
     else:
         return HttpResponse(status=404)
-    
-def get_all_despesas(request):
-    historicos = models.HistoricoCliente.objects.filter(
-        cliente=models.Cliente.objects.get(pk=2),
-        despesa__isnull=False,
-        receita__isnull=True,
-    )
-    response={}
-    for historico in historicos:
-        response[historico.despesa.pk]={
-            "descricao":historico.despesa.descricao,
-            "valor":historico.despesa.valor,
-            "data":historico.despesa.data_despesa.strftime("%d-%m-%Y"),
-            "categoria":historico.despesa.categoria.nome
-        }
-    return HttpResponse(json.dumps(response,ensure_ascii=False),content_type='application/json')
+
+#verificar o que fazer depois com essa requisição
+# def get_all_despesas(request):
+#     cliente = request.session.get("cliente")
+#     if cliente!=None:
+#         historicos = models.HistoricoCliente.objects.filter(
+#             cliente=models.Cliente.objects.get(pk=cliente),
+#             despesa__isnull=False,
+#             receita__isnull=True,
+#         )
+#         response={}
+#         for historico in historicos:
+#             response[historico.despesa.pk]={
+#                 "descricao":historico.despesa.descricao,
+#                 "valor":historico.despesa.valor,
+#                 "data":historico.despesa.data_despesa.strftime("%d-%m-%Y"),
+#                 "categoria":historico.despesa.categoria.nome,
+#                 "historico_id":historico.pk
+#             }
+#         return HttpResponse(json.dumps(response,ensure_ascii=False),content_type='application/json')
+#     else:
+#         return HttpResponse(status=404)

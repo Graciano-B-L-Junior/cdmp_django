@@ -6,6 +6,23 @@
         <p>Data</p>
         <p>Ação</p>
         <div class="divider"></div>
+        {% for despesa in despesas %}
+        <p class="align_left">{{despesa.descricao}}</p>
+        <p>R$ {{despesa.valor}}</p>
+        <p>{{despesa.categoria}}</p>
+        <p>{{despesa.data}}</p>
+        <p>
+            <a href="{{despesa.historico_id}}">Visualizar</a>
+        </p>
+        <div class="divider"></div>
+        {% endfor %}
+        <!--
+        <p>Descrição</p>
+        <p>Valor</p>
+        <p>Categoria</p>
+        <p>Data</p>
+        <p>Ação</p>
+        <div class="divider"></div>
         <p class="align_left">despesas com lazer</p>
         <p>R$ 50,00</p>
         <p>Lazer</p>
@@ -13,6 +30,7 @@
         <p>
             <a href="">Visualizar</a>
         </p>
+    -->
     {% else %}
         <h2>Nenhuma despesa registrada</h2>
 
