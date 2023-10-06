@@ -70,7 +70,6 @@ def index(request):
         cliente = models.Cliente.objects.get(pk=cliente)
         historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente.pk).order_by('-id')[:5]
         despesas = get_all_despesas_by_user(request)
-        print(despesas)
         context = {
             "cliente":cliente,
             "historico_cliente":historico_cliente,

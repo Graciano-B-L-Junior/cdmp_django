@@ -1,0 +1,18 @@
+<div class="table_despesas">
+    <p>Descrição</p>
+    <p>Valor</p>
+    <p>Categoria</p>
+    <p>Data</p>
+    <p>Ação</p>
+    <div class="divider"></div>
+    {% for despesa in despesas %}
+    <p class="align_left">{{despesa.descricao}}</p>
+    <p id="valor">R$ {{despesa.valor}}</p>
+    <p>{{despesa.categoria}}</p>
+    <p>{{despesa.data_despesa|date:"d/m/Y"}}</p>
+    <p>
+        <a href="{% url 'edit_despesa' id=despesa.pk %}{{page}}">Editar</a>
+    </p>
+    <div class="divider"></div>
+    {% endfor %}
+</div>

@@ -152,10 +152,23 @@ form.hide{
         height: 100vh;
         
         grid-template-columns: 3fr;
-        grid-template-rows: 40px 70px auto;
+        grid-template-rows: 40px 250px auto;
         grid-template-areas: 
         "nav_menu nav_menu nav_menu"
-        "div div div"
         "form form form";
     }
+    form#form_mes{
+        grid-area: form;
+        width: 100%;
+    }
+    form#form_geral{
+        grid-area: form;
+        width: 100%;
+    }
+    form#set_category{
+        grid-area: form;
+        width: 100%;
+        height: 100%;
+    }
+
 }

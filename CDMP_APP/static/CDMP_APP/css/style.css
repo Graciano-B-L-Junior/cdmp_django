@@ -243,20 +243,26 @@ section.mini-data #monitor{
         grid-template-areas: 
         "section_1";
     }
+
+    .table_despesas{
+        display: none;
+    }
     
     section.greater-data{
-        grid-template-rows: none;
+        grid-template-rows: 70px 70px 250px 300px 250px 250px 1fr;
         grid-template-areas: 
         "nav_menu  titulo " 
         "user    user" 
         "dem1    dem1" 
-        "canva_1 canva_1" 
-        "dem2    dem2";
+        "dem3    dem3"
+        "dem4    dem4" 
+        "dem2    dem2"
     }
     section.mini-data{
         display: none;
     }
     body > nav{
+        border-radius: 0px;
         padding: 0px;
         height: 100%; /* 100% Full-height */
         width: 0%; /* 0 width - change this with JavaScript */
@@ -264,10 +270,13 @@ section.mini-data #monitor{
         z-index: 1; /* Stay on top */
         top: 0; /* Stay at the top */
         left: 0;
-        background-color: #111; /* Black*/
+        background-color: rgba(0,42,122,255); /* Black*/
         overflow-x: hidden; /* Disable horizontal scroll */
         padding-top: 60px; /* Place content 60px from the top */
         transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    }
+    nav .links{
+        padding: 0px 10px;
     }
     nav .links > a{
         display: inline-block;

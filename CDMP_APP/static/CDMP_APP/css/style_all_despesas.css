@@ -1,17 +1,63 @@
-section.greater-data{
-    display: flex !important;
-    flex-direction: column;
-}
 .edit-despesa button{
     cursor: pointer;
 }
 
 form{
+    background-color: #ffffff;
+    padding: 20px;
+    grid-row: 1/3;
     display: flex;
     flex-direction: column;
-    width: 150px;
-    justify-content: space-around;
+    border-radius: 10px;
 }
-form > * {
-    margin: 3px 0;
+form > *:not(label) {
+    margin-top: 15px;
+    height: 30px;
+}
+
+form select{
+    height: 40px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    padding-left: 10px;
+}
+
+form#form_data{
+    grid-column: 1/3;
+    grid-row: 1/3;
+    display: block;
+}
+
+form input[type=submit]{
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    background-color: #349dff;
+    color: #ffffff;
+    border: none;
+}
+
+.table_despesas{
+    grid-row: 3;
+}
+
+@media screen and (max-width: 450px){
+    body section.greater-data{
+        grid-template-columns: 1fr;
+        grid-template-rows: 70px auto;
+    }
+    body section form{
+        grid-row: 2;
+        height: 300px;
+    }
+    body .table_despesas{
+        display: block;
+        grid-row: 4;
+        grid-column: 1;
+    }
+    body section form#form_data{
+        grid-row: 2;
+        display: flex;
+        flex-direction: column;
+    }
 }

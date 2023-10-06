@@ -48,6 +48,11 @@ form input[type=submit]{
         "canva_1 canva_1" 
         "dem2    dem2";
     }
+    form{
+        grid-column: 1/3;
+        grid-row: 2/3;
+        height: 30%;
+    }
     body section.greater-data button.show-menu{
         height: 40px;
     }

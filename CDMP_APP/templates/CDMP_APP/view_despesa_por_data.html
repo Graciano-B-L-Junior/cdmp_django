@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'CDMP_APP/css/style_all_despesas.css' %}">
 {%endblock%}
 {%block greater-data%}
-<form action="" method="post">
+<form id="form_data" action="" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Enviar">
@@ -17,31 +17,17 @@
 </ul>
 {% endif %}
 {% if despesas%}
-    {% for despesa in despesas %}
-    <div class="info-meta">
-        <p class="nome-despesa">Descrição: {{despesa.descricao}}</p>
-        <p>Valor despesa: <span class="valor">{{despesa.valor}}</span></p>
-        <p>Data despesa: <span class="data">{{despesa.data_despesa|date:"j/m/Y"}}</span></p>
-        <p>Categoria: <span class="data">{{despesa.categoria}}</span></p>
-        <div class="edit-despesa">
-            <button type="button" id="{{despesa.pk}}" onclick="">Editar despesa</button>
-        </div>
-    </div>
-    {% endfor %}
+    {% include '../includes/table_despesa_request.html' %}
+    
 {% endif %}
 {%endblock%}
 {%block other-content%}
 <script>
-    let all = document.querySelectorAll("span.valor")
+    let all = document.querySelectorAll("p.valor")
     all.forEach((el)=>{
         let valor = parseFloat(el.innerHTML)
         valor = valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
         el.innerHTML = valor
     })
-    document.querySelectorAll(".edit-despesa button").forEach((el)=>{
-        el.addEventListener('click',()=>{
-            window.location.href = "{% url 'edit_despesa' id=0 %}{{page}}".replace("0",el.id)
-        })
-    })    
 </script>
 {%endblock%}
