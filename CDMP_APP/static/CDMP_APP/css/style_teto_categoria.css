@@ -65,8 +65,8 @@ form#form_geral{
     padding: 20px;
     border-radius: 10px;
     background-color: #ffffff;
-    height: 25%;
-    width: 30%;
+    width: 400px;
+    height: 250px;
 }
 
 form#form_geral *:not(label){
@@ -101,11 +101,10 @@ form#set_category{
     flex-direction: column;
     width: 40%;
     background-color: #ffffff;
-    height: 90%;
     padding: 20px;
     border-radius: 10px;
     grid-row: 1/3;
-    height: 35%;
+    height: 200px;
 }
 
 form#set_category *:not(label){

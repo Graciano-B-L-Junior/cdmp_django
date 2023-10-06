@@ -12,7 +12,7 @@
         <p>{{despesa.categoria}}</p>
         <p>{{despesa.data}}</p>
         <p>
-            <a href="{{despesa.historico_id}}">Visualizar</a>
+            <a href="{% url 'view_history' id=despesa.historico_id %}">Visualizar</a>
         </p>
         <div class="divider"></div>
         {% endfor %}

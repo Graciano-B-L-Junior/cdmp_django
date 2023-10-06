@@ -90,7 +90,7 @@ def add_gasto(request):
                 data_gasto = form.cleaned_data["data_despesa"]
                 categoria = form.cleaned_data["categoria"]
                 cliente = models.Cliente.objects.get(pk=cliente)
-                categoria = models.Categoria.objects.get(nome=categoria)
+                categoria = models.Categoria.objects.get(nome=categoria,cliente=cliente)
                 aux_valor = float(valor)
                 if aux_valor < 0:
                     messages.error(request,"valor negativo não permitido!")
@@ -431,7 +431,7 @@ def view_despesa_por_categoria(request):
                 categoria = form.cleaned_data["categoria"]
                 cliente = models.Cliente.objects.get(pk=cliente)
                 historico_cliente = models.HistoricoCliente.objects.filter(cliente=cliente).order_by('-id')[:5]
-                categoria = models.Categoria.objects.get(nome=categoria)
+                categoria = models.Categoria.objects.get(nome=categoria,cliente=cliente)
                 despesa = models.HistoricoCliente.objects.filter(cliente=cliente,despesa__isnull=False).only('despesa')
                 despesa = models.Despesa.objects.filter(id__in=despesa.values('despesa'),categoria=categoria)
                 return render(request,"CDMP_APP/view_despesa_por_categoria.html",{"form":form,
@@ -635,18 +635,23 @@ def get_gastos_categoria_x_teto_gastos_categoria(request):
             categorias_cliente=models.Categoria.objects.filter(
                 cliente_id=cliente
             )
+            
             teto_por_categoria = models.TetoDeGastosPorCategoria.objects.filter(
                 cliente=cliente,
                 categoria__in=categorias_cliente
             )
-            end_date=datetime.now().replace(day=1) - timedelta(days=1)
-            start_date=datetime(end_date.year,end_date.month,1)
+            
+            start_date=datetime.now().replace(day=1)
+            end_date=datetime.now()
+            print(end_date,start_date)
             despesas=models.Despesa.objects.filter(
                 cliente_id=cliente,
                 categoria_id__in=categorias_cliente,
                 data_despesa__lte=end_date,
                 data_despesa__gte=start_date
             ).values('categoria','valor',).annotate(total=Sum('valor'))
+            print("ronaldinho soccer")
+            print(despesas)
             res_json={}
             for teto in teto_por_categoria:
                 for despesa in despesas:
@@ -655,7 +660,7 @@ def get_gastos_categoria_x_teto_gastos_categoria(request):
                             "teto":teto.teto,
                             "gastos":despesa["valor"]
                         }
-
+            
             return HttpResponse(json.dumps(res_json),content_type='application/json')
         else:
             return HttpResponse(status=404)

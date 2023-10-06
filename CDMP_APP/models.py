@@ -14,7 +14,7 @@ class Cliente(models.Model):
         verbose_name_plural="Clientes"
 
 class Categoria(models.Model):
-    nome = models.CharField(unique=True,max_length=50)
+    nome = models.CharField(unique=False,max_length=50)
     data_criacao = models.DateTimeField(default=timezone.now)
     cliente = models.ForeignKey(Cliente,null=True,on_delete=models.CASCADE)
 
