@@ -40,9 +40,16 @@ form input[type=submit]{
         margin: 3px 0px;
     }
     body section.greater-data {
-    grid-template-rows: 40px 1fr 1fr;
+    grid-template-rows: 40px 40px 1fr;
     grid-template-areas:
-    "nav_menu nav_menu" 
+    "nav_menu nav_menu"
+    ".          ." 
     "form     form";
+    }
+    ul.messages{
+        grid-row: 2;
+    }
+    ul.messages li{
+        margin: 0px;
     }
 }

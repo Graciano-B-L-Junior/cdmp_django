@@ -51,7 +51,9 @@ form input[type=submit]{
         height: 300px;
     }
     body .table_despesas{
-        display: block;
+        overflow-x: auto;
+        grid-template-columns: repeat(5, 150px);
+        display: grid;
         grid-row: 4;
         grid-column: 1;
     }
