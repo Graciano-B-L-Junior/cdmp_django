@@ -131,7 +131,7 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / 'static'
 
-STATICFILES_DIRS = BASE_DIR / 'static'
+STATICFILES_DIRS = BASE_DIR / 'staticfiles_build' /'static'
 
 
 # Default primary key field type
