@@ -643,15 +643,14 @@ def get_gastos_categoria_x_teto_gastos_categoria(request):
             
             start_date=datetime.now().replace(day=1)
             end_date=datetime.now()
-            print(end_date,start_date)
+            
             despesas=models.Despesa.objects.filter(
                 cliente_id=cliente,
                 categoria_id__in=categorias_cliente,
                 data_despesa__lte=end_date,
                 data_despesa__gte=start_date
             ).values('categoria','valor',).annotate(total=Sum('valor'))
-            print("ronaldinho soccer")
-            print(despesas)
+            
             res_json={}
             for teto in teto_por_categoria:
                 for despesa in despesas:
