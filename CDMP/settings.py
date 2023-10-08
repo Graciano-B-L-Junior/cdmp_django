@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CDMP.wsgi.application'
+WSGI_APPLICATION = 'CDMP.wsgi.app'
 
 
 # Database
