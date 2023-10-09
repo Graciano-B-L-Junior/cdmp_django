@@ -7,15 +7,24 @@ from django.db.models.base import Model
 
 from django.forms.utils import ErrorList
 from .models import Categoria,Receitas,TetoDeGastos,TetoDeGastosPorCategoria
-from CDMP_APP.scripts.get_categoria_by_cliente import set_choices_categoria
 
 
 
 class DespesaForm(forms.Form):
+    def set_choices_categoria(self,cliente) -> tuple:
+        categorias = Categoria.objects.filter(
+              cliente__pk=cliente
+        )
+        tupla= tuple()
+        lista=[]
+        for categoria in categorias:
+              lista.append(categoria.nome)
+        tupla = ((categoria,categoria) for categoria in lista)
+        return tupla
     def __init__(self,cliente_id="",*args,**kwargs) -> None:
       super().__init__(*args,**kwargs)
       if cliente_id !="":
-            self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(cliente_id))
+            self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=self.set_choices_categoria(cliente_id))
       else:
             raise Exception("cliente_id cannot be empty")
       
@@ -78,10 +87,20 @@ class QueryDespesaPorDataForm(forms.Form):
       ))
 
 class QueryDespesaPorCategoriaForm(forms.Form):
+      def set_choices_categoria(self,cliente) -> tuple:
+        categorias = Categoria.objects.filter(
+              cliente__pk=cliente
+        )
+        tupla= tuple()
+        lista=[]
+        for categoria in categorias:
+              lista.append(categoria.nome)
+        tupla = ((categoria,categoria) for categoria in lista)
+        return tupla
       def __init__(self,cliente_id="",*args,**kwargs) -> None:
             super().__init__(*args,**kwargs)
             if cliente_id !="":
-                  self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(cliente_id))
+                  self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=self.set_choices_categoria(cliente_id))
             else:
                   raise Exception("cliente_id cannot be empty")
       categoria = forms.ChoiceField(widget=forms.Select,choices="")
@@ -105,7 +124,18 @@ class FormSelectFielCategoryByClient(forms.Form):
       def __init__(self,cliente_id="",*args,**kwargs) -> None:
             super().__init__(*args,**kwargs)
             if cliente_id !="":
-                  self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(cliente_id))
+                  self.fields["categoria"] = forms.ChoiceField(widget=forms.Select,choices=self.set_choices_categoria(cliente_id))
             else:
                   raise Exception("cliente_id cannot be empty")
-      categoria = forms.ChoiceField(widget=forms.Select,choices=set_choices_categoria(0))
+            
+      def set_choices_categoria(self,cliente) -> tuple:
+        categorias = Categoria.objects.filter(
+              cliente__pk=cliente
+        )
+        tupla= tuple()
+        lista=[]
+        for categoria in categorias:
+              lista.append(categoria.nome)
+        tupla = ((categoria,categoria) for categoria in lista)
+        return tupla
+      categoria = forms.ChoiceField(widget=forms.Select,choices="")
