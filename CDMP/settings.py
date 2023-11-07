@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c8!s*%@$lj*18-h&h73f6_p4_0rgqu=lpwb6%09s0up1owsnv8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['35.247.243.183','127.0.0.1']
+ALLOWED_HOSTS = ['coda.vps-kinghost.net']
 
 
 # Application definition
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CDMP.wsgi.app'
+WSGI_APPLICATION = 'CDMP.wsgi.application'
 
 
 # Database
@@ -88,8 +88,12 @@ WSGI_APPLICATION = 'CDMP.wsgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'seu_estoque_pessoal',
+        'USER': 'admin',
+        'PASSWORD': 'adminvpscoda',
+        'HOST': 'coda.vps-kinghost.net',
+        'PORT': 5432,
     }
 }
 
