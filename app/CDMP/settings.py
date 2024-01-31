@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-c8!s*%@$lj*18-h&h73f6_p4_0rgqu=lpwb6%09s0up1owsnv8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*','coda.vps-kinghost.net']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -134,7 +134,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-import os
+
 
 STATIC_URL = 'static/'
 
