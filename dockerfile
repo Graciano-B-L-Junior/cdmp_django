@@ -1,8 +1,7 @@
 FROM python:3.10.13-bookworm
 
 WORKDIR /app
-COPY ./app /app
-
+COPY ./app .
 
 
 RUN apt-get upgrade
@@ -13,13 +12,10 @@ RUN apt-get update && \
 RUN pip install -r requirements.txt
 RUN pip install psycopg
 
-RUN python manage.py makemigrations
+RUN bash app_build.sh
 
-RUN python manage.py collectstatic --noinput
-
-RUN groupadd -r cdmp && useradd -r -g cdmp cdmp
+RUN adduser --disabled-password cdmp
 USER cdmp
-
 
 
 
