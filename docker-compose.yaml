@@ -5,7 +5,7 @@ services:
     container_name: cdmp
     expose:
       - "8000"
-    command: bash app_build.sh
+    command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db
     environment:
