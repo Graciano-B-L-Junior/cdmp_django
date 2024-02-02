@@ -9,10 +9,9 @@ RUN apt-get upgrade
 RUN apt-get update && \
     apt-get install -y python3-pip
 
-RUN pip install -r requirements.txt
-RUN pip install psycopg
+RUN pip install -r requirements.txt && pip install psycopg
 
-RUN bash app_build.sh
+RUN chmod a+x app_build.sh
 
 RUN adduser --disabled-password cdmp
 USER cdmp

@@ -1,0 +1,47 @@
+*{
+    font-family: 'Nunito', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+form input:not([type=submit]){
+    margin: 15px 0px;
+    height: 30px;
+    background-color: rgb(246, 248, 250);
+    border: 1px solid ;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+form input[type=submit]{
+    background-color: rgb(31, 136, 61);
+    color: white;
+    border-radius: 6px;
+    margin-top: 10px;
+    padding: 20px;
+    border: none;
+}
+
+@media screen and (max-width: 450px) {
+
+    body{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+    section.login form{
+       display: flex;
+       flex-direction: column; 
+    }
+    section.login form *{
+        margin-top: 5px;
+    }
+}
