@@ -3,6 +3,8 @@ services:
   cdmp:
     build: .
     container_name: cdmp
+    volumes:
+      - static_volume:/web/static
     expose:
       - "8000"
     command: bash app_build.sh
@@ -29,7 +31,7 @@ services:
     image: nginx:latest
     container_name: nginx
     volumes:
-      - ./app/static:/app/static
+      - static_volume:/web/static
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - "80:80"
@@ -38,4 +40,5 @@ services:
   
 volumes:
   postgres_data:
+  static_volume:
     

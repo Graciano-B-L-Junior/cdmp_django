@@ -1,6 +1,6 @@
 FROM python:3.10.13-bookworm
 
-WORKDIR /app
+WORKDIR /web
 COPY ./app .
 
 
@@ -12,8 +12,8 @@ RUN apt-get update && \
 RUN pip install -r requirements.txt && pip install psycopg
 
 RUN chmod a+x app_build.sh
-
 RUN adduser --disabled-password cdmp
+RUN chown -R cdmp:cdmp /web
 USER cdmp
 
 
