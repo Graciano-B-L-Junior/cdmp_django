@@ -6,7 +6,7 @@ It's a full stack project,created to simplify search, analyze, and manage person
 ## Motivation
 I have a google sheet to put my spends and then find where spended more, but are just numbers, and read an annual spends is a mess to me, then i think to create a web system to resolve this issue.
 
-## How to install
+# How to install
 #### This project need **docker** and **docker-compose** to build and run
 
 ## Instaling docker and docker-compose (windows and linux users)
