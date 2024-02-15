@@ -1,5 +1,11 @@
 <h1>Casa da moeda pessoal - web application to monitoring and analalyze your spends</h1>
 
+<img src="https://github.com/Graciano-B-L-Junior/cdmp_django/assets/44882375/0afd88ff-5769-4758-a559-1e6ad3aee378" height=500>
+<img src="https://github.com/Graciano-B-L-Junior/cdmp_django/assets/44882375/ed28d849-9ca3-47c7-b8e3-2de384b930f1" height=500>
+<img src="https://github.com/Graciano-B-L-Junior/cdmp_django/assets/44882375/13cbd6e9-221d-4003-bc3e-efa23dfe0d16" width=1500>
+<img src="https://github.com/Graciano-B-L-Junior/cdmp_django/assets/44882375/ddf2ed16-a640-46f2-96aa-f23318ae4107" width=1500>
+
+
 ## About project
 It's a full stack project,created to simplify search, analyze, and manage personal (or bussiness if you set categories) spends.
 
