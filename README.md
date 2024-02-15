@@ -15,3 +15,5 @@ I have a google sheet to put my spends and then find where spended more, but are
 
 ## build images and start up containers
 *  in terminal prompt, **sudo docker-compose build**, this will build the containers for development environment
+*  Then prompt **sudo docker-compose up** to run containers
+*  Open browser and access localhost
