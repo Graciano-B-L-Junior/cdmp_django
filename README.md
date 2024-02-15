@@ -18,7 +18,7 @@ I have a google sheet to put my spends and then find where spended more, but are
 *  Then prompt **sudo docker-compose up** to run containers
 *  Open browser and access <http://localhost:8000>
 
-##Tecnologies used
+## Tecnologies used
 *  python
 *  Django (web framework)
 *  Postgres (Database)
