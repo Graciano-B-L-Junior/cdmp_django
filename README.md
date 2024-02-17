@@ -12,7 +12,7 @@ It's a full stack project,created to simplify search, analyze, and manage person
 ## Motivation
 I have a google sheet to put my spends and then find where spended more, but are just numbers, and read an annual spends is a mess to me, then i think to create a web system to resolve this issue.
 
-# How to install
+# How to install and run
 #### This project need **docker** and **docker-compose** to build and run
 
 ## Instaling docker and docker-compose (windows and linux users)
@@ -23,6 +23,11 @@ I have a google sheet to put my spends and then find where spended more, but are
 *  in terminal prompt, **sudo docker-compose build**, this will build the containers for development environment
 *  Then prompt **sudo docker-compose up** to run containers
 *  Open browser and access <http://localhost:8000>
+
+## Using production environment
+*  in terminal prompt **sudo docker-compose -f docker-compose.prod.yaml build**, this will build the containers for production environment
+*  Then prompt **sudo docker-compose up** to run containers
+*  Open browser and access <http://localhost>
 
 ## Tecnologies used
 *  python
