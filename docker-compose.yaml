@@ -1,0 +1,35 @@
+version: '3'
+services:
+  cdmp:
+    build: .
+    container_name: cdmp
+    volumes:
+      - ./app:/web
+    ports:
+      - "8000:8000"
+    command: bash app_build_dev.sh
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+  
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+    ports:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  
+  
+volumes:
+  postgres_data:
+
+    

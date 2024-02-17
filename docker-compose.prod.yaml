@@ -1,0 +1,44 @@
+version: '3'
+services:
+  cdmp:
+    build: .
+    container_name: cdmp
+    volumes:
+      - static_volume:/web/static
+    expose:
+      - "8000"
+    command: bash app_build.sh
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+  
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_DB
+    ports:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - static_volume:/web/static
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - cdmp
+  
+volumes:
+  postgres_data:
+  static_volume:
+    
