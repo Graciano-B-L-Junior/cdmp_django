@@ -13,7 +13,7 @@ RUN pip install -r requirements.txt && pip install psycopg
 
 RUN chmod a+x app_build.sh && chmod a+x app_build_dev.sh
 RUN adduser --disabled-password cdmp
-RUN chown -R cdmp:cdmp /web
+RUN chown -R cdmp /web
 USER cdmp
 
 

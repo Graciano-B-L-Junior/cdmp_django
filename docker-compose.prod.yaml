@@ -11,17 +11,17 @@ services:
     depends_on:
       - db
     environment:
-      - POSTGRES_PASSWORD
-      - POSTGRES_USER
-      - POSTGRES_DB
+      - POSTGRES_PASSWORD=senha123
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=cdmp
   
   db:
     image: postgres
     container_name: db
     environment:
-      - POSTGRES_PASSWORD
-      - POSTGRES_USER
-      - POSTGRES_DB
+      - POSTGRES_PASSWORD=senha123
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=cdmp
     ports:
       - "5432"
     volumes:
@@ -29,7 +29,7 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: nginx_container
     volumes:
       - static_volume:/web/static
       - ./nginx.conf:/etc/nginx/nginx.conf
